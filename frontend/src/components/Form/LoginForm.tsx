@@ -1,15 +1,42 @@
+import { useState } from "react";
+import axiosAPI from "../../utils/axios-api";
 
 const LoginForm = () => {
-  const onLoginSubmit = (e: any) =>{
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errors,setErrors] = useState({
+      email:"",
+      password:"",
+  })
+  // const {emailError,passwordError} = errors;
+  const onSubmitLogin = (e: React.MouseEvent<HTMLButtonElement>) =>{
     e.preventDefault();
-    console.log("Hello");
+    const payload = {
+      email,
+      password
+    }
+    console.log(payload);
+
+    axiosAPI.post('/login', payload)
+      .then(({data}) => {
+        console.log(data)
+      })
+      .catch((err) => {
+        const response = err.response;
+        setErrors(response.data.errors);
+      })
+    
+    console.log(errors);
   }
   return <>
     <form action="#" method="POST">
       <div className="flex flex-col gap-4 pt-5">
-        <input type="text" name="email" id="email" placeholder="Email" className="border rounded p-2"/>
-        <input type="password" name="password" id="password" placeholder="Password" className="border rounded p-2"/>
-        <button className="bg-lime-300 border rounded-md mt-8 p-2" onClick={onLoginSubmit}>
+        <input type="text" name="email" id="email" placeholder="Email" className="border rounded p-2" value={email} onChange={(e) => setEmail(e.target.value)}
+        />
+        {errors.email}
+        <input type="password" name="password" id="password" placeholder="Password" className="border rounded p-2" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        {errors.password}
+        <button className="bg-lime-300 border rounded-md mt-8 p-2" onClick={onSubmitLogin}>
           Login
         </button>
       </div>
