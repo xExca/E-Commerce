@@ -13,11 +13,11 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<DefaultLayout />}>
-        <Route path='/' element={<Navigate to='/login'/>}/>
+        <Route path='/' element={<Navigate to='/login' />} />\
         <Route path="/login" element={<MainDefault type={"Login"} />} />
-        <Route path="/signup" element={<MainDefault type={"Register"}/>} />
+        <Route path="/signup" element={<MainDefault type={"Register"} />} />
       </Route>
-      <Route path="*" element={<NotFoundPage/>}></Route>
+      <Route path="*" element={<NotFoundPage />}></Route>
     </Route>
   )
 );
