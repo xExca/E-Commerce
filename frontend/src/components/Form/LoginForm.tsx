@@ -4,12 +4,12 @@ import axiosAPI from "../../utils/axios-api";
 const LoginForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [errors,setErrors] = useState({
-      email:"",
-      password:"",
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
   })
   // const {emailError,passwordError} = errors;
-  const onSubmitLogin = (e: React.MouseEvent<HTMLButtonElement>) =>{
+  const onSubmitLogin = (e: any) => {
     e.preventDefault();
     const payload = {
       email,
@@ -18,13 +18,15 @@ const LoginForm = () => {
     console.log(payload);
 
     axiosAPI.post('/login', payload)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log(data)
       })
       .catch((err) => {
         const response = err.response.data;
         setErrors(response.errors);
       })
+
+    console.log(errors);
   }
   return <>
     <form action="#" method="POST">
@@ -43,6 +45,6 @@ const LoginForm = () => {
         </button>
       </div>
     </form>
-</>
+  </>
 }
 export default LoginForm
