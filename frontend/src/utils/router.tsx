@@ -2,6 +2,8 @@
 import DefaultLayout from "../layouts/DefaultLayout";
 import MainDefault from "../components/MainDefault";
 import NotFoundPage from "../pages/NotFoundPage";
+import UserLayout from "../layouts/UserLayout";
+import AdminDashboard from "../components/Admin/AdminDashboard";
 import TestingForm from "../components/Form/TestingForm";
 import AdminLayout from "../layouts/AdminLayout";
 import Dashboard from "../pages/admin/Dashboard";
@@ -20,7 +22,10 @@ const AppRoute: React.FC = () => {
         <Route path='/admin/*' element={<AdminLayout />}>
           <Route path='dashboard' element={<Dashboard />} />
         </Route>
-        <Route path="*" element={<NotFoundPage />}></Route>
+        <Route path='/user' element={<UserLayout/>}>
+        <Route path="/user/dashboard" element={<AdminDashboard />} />
+      </Route>
+      <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
     </BrowserRouter>
   );
