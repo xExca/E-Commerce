@@ -19,7 +19,7 @@ const LoginForm = () => {
 
     axiosAPI.post('/login', payload)
       .then(({ data }) => {
-        console.log(data)
+        console.log(data);
       })
       .catch((err) => {
         const response = err.response.data;
