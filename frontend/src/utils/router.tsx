@@ -15,7 +15,8 @@ const AppRoute: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/*" element={<DefaultLayout />}>
-          <Route path="login" index element={<MainDefault type={"Login"} />} />
+          <Route path="login" element={<MainDefault type={"Login"} />} />
+          <Route index element={<MainDefault type={"Login"} />} />
           <Route path="signup" element={<MainDefault type={"Register"} />} />
           <Route path="test" element={<TestingForm />} />
         </Route>

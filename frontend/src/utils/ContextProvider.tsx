@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type useAuthProps = {
-  currentUser: string;
+  user: string;
   token: string;
   isLoggedIn: boolean;
   setUser: React.Dispatch<React.SetStateAction<string>>;
@@ -13,7 +13,7 @@ type AuthProviderProps = {
 }
 
 const AuthContext = createContext<useAuthProps>({
-  currentUser: "",
+  user: "",
   token: "",
   isLoggedIn: false,
   setUser: () => { },
@@ -35,7 +35,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{
-      currentUser: user,
+      user,
       token,
       isLoggedIn,
       setUser,
