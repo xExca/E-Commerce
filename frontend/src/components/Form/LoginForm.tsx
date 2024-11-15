@@ -2,14 +2,14 @@ import { Formik,Form, Field, ErrorMessage } from "formik"
 import axiosAPI from "../../utils/axios-api"
 import * as Yup from "yup"
 import { useState,useEffect } from "react"
-import { useAuth } from "../../utils/ContextProvider"
+import { useStateContext } from "../../utils/ContextProvider";
 
 interface ErrorType {
   message: string;
 }
 
 const LoginForm = () =>{
-  const {setUser, setToken} = useAuth()
+  const {setUser, setToken} = useStateContext()
   const [errors, setErrors] = useState<ErrorType>({ message: '' });
   const [showError, setShowError] = useState<boolean>(false);
   
@@ -32,10 +32,15 @@ const LoginForm = () =>{
       onSubmit={(values, { setSubmitting }) => {
         axiosAPI.post('/login', values)
           .then((response) => {
-            console.log(response.status)
             if(response.status === 200){
-              console.log(response.data)
-              setUser(`${response.data.user.lastname}, ${response.data.user.firstname}`)
+              const {firstname,lastname,middlename,id,email} = response.data.user
+              setUser({
+                firstname,
+                middlename,
+                lastname,
+                id,
+                email
+              })
               setToken(response.data.token)
             }
         })

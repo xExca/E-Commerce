@@ -40,4 +40,9 @@ class AuthController extends Controller
   }
   return response(['message' => 'Error creating user'], 500);
   } 
+
+  public function logout(Request $request){
+    Auth::logout();
+    return response()->json(['message'=> 'Logout successful'],200);
+  }
 }

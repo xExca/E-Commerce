@@ -1,20 +1,14 @@
-import { useAuth } from "../../utils/ContextProvider"
-import { Navigate } from "react-router-dom"
+import Card from "../../components/Card"
 
 type Props = {}
 const Dashboard = (props: Props) => {
-  const test = () => {
-    const {setUser, setToken} = useAuth();
-    setUser({})
-    setToken(null)
-    return <Navigate to="/login"/>
-  }
   return (
     <>
-    <div>Dashboard</div>
-    <button onClick={test}>
-Logout
-    </button>
+      <div className="grid grid-cols-4 gap-4 p-20">
+        {Array.from({ length: 12 }).map((_, i) => (
+         <Card key={i} />
+        ))}
+      </div>
     </>
   )
 }

@@ -9,6 +9,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import Dashboard from "../pages/admin/Dashboard";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import React from "react";
+import Users from "../pages/admin/Users";
 
 const AppRoute: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const AppRoute: React.FC = () => {
         </Route>
         <Route path='/admin/*' element={<AdminLayout />}>
           <Route path='dashboard' element={<Dashboard />} />
+          <Route path="users" element={<Users />} />
         </Route>
         <Route path='/user' element={<UserLayout/>}>
         <Route path="/user/dashboard" element={<AdminDashboard />} />

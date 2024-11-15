@@ -11,3 +11,4 @@ Route::get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/checkEmail', [AuthController::class,'checkEmail']);
 Route::post('/register',[AuthController::class,'register']);
+Route::post('/logout',[AuthController::class,'logout']);

@@ -1,15 +1,25 @@
 import { Outlet, Navigate } from "react-router-dom"
-import { useAuth } from "../utils/ContextProvider"
+import Navbar from "../components/Navbar";
+import { useStateContext } from "../utils/ContextProvider";
+import Sidebar from "../components/Sidebar";
 type Props = {}
 const AdminLayout = (props: Props) => {
-  const {token, user} = useAuth();
-  if(!token){
+  const {user, token, setUser, setToken} = useStateContext();
+  
+  if (!token) {
     return <Navigate to="/login"/>
   }
   return (
     <>
-    <div>AdminLayout</div>
-    <Outlet/>
+    <div className="flex flex-col h-screen">
+      {/* <div className="w-full">
+        <Navbar />
+      </div> */}
+      <div className="flex flex-row h-full bg-snow-drift-50">
+        <Sidebar />
+        <Outlet/>
+      </div>
+    </div>
     </>
   )
 }
