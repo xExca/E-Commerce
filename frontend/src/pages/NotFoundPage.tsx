@@ -1,26 +1,28 @@
-import { GiDinosaurRex } from "react-icons/gi";
 import { Link } from "react-router-dom";
 
 type Props = {}
 const NotFoundPage = (props: Props) => {
   return (
     <>
-    <div className="h-screen w-screen bg-gray-100 flex items-center">
-      <div className="container flex flex-col md:flex-row items-center justify-center px-5 text-gray-700">
-          <div className="max-w-md">
-              <div className="text-5xl font-dark font-bold">404</div>
-                <p
-                  className="text-2xl md:text-3xl font-light leading-normal"
-                >Sorry we couldn't find this page. </p>
-              <p className="mb-8">But dont worry, you can find plenty of other things on our homepage.</p>
-              
-              <Link to={'/'} className="px-4 inline py-2 text-sm font-medium leading-5 shadow text-white transition-colors duration-150 border border-transparent rounded-lg focus:outline-none focus:shadow-outline-blue bg-blue-600 active:bg-blue-600 hover:bg-blue-700">Back to Homepage</Link>
-        </div>
-          <div className="max-w-lg">
-          <GiDinosaurRex className="text-9xl"/>
-      </div>
-    </div>
-  </div>
+<main className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
+	<h1 className="text-9xl font-extrabold text-white tracking-widest">404</h1>
+	<div className="bg-[#FF6A3D] px-2 text-sm rounded rotate-12 absolute">
+		Page Not Found
+	</div>
+	<button className="mt-5">
+      <a
+        className="relative inline-block text-sm font-medium text-[#FF6A3D] group active:text-orange-500 focus:outline-none focus:ring"
+      >
+        <span
+          className="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] group-hover:translate-y-0 group-hover:translate-x-0"
+        ></span>
+
+        <span className="relative block px-8 py-3 bg-[#1A2238] border border-current">
+          <Link to="/">Go Home</Link>
+        </span>
+      </a>
+    </button>
+</main>
   </>
   )
 }

@@ -19,8 +19,9 @@ class AuthController extends Controller
       return response()->json(['message' => 'Invalid credentials'], 401);
     }
     $user = Auth::user();
+    $permissions  = $user->getAllPermissions()->pluck('name')->toArray();
     $token = $user->createToken('main')->plainTextToken;
-    return response(compact('user', 'token'));
+    return response(compact('user', 'token', 'permissions'));
   }
   public function checkEmail(Request $request)
   {

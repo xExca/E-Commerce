@@ -6,6 +6,7 @@ type AuthContextType = {
   token: string | null;
   setUser: (user:any) => void;
   setToken: (token: string|null) => void;
+  checkPermission: (permission: string| undefined) => boolean;
 };
 
 type UserType = {
@@ -14,6 +15,7 @@ type UserType = {
   lastname: string,
   id: number | null,
   email: string
+  permissions: string[]
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -21,6 +23,7 @@ const AuthContext = createContext<AuthContextType>({
   token: null,
   setUser: () => {},
   setToken: () => {},
+  checkPermission: () => false,
 });
 
 
@@ -46,13 +49,18 @@ export const ContextProvider = ({children}: {children: React.ReactNode}) => {
       localStorage.removeItem('ACCESS_TOKEN')
     }
   }
+  const checkPermission = (permission: string | undefined) => {
+    if (!user) return false;
+    return user.permissions.includes(permission ?? '');
+  };
 
   return (
     <AuthContext.Provider value={{
       user,
       setUser, 
       token,
-      setToken
+      setToken,
+      checkPermission
       }}>
         {children}
     </AuthContext.Provider>

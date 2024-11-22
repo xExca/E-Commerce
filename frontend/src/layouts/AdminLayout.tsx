@@ -4,7 +4,7 @@ import { useStateContext } from "../utils/ContextProvider";
 import Sidebar from "../components/Sidebar";
 type Props = {}
 const AdminLayout = (props: Props) => {
-  const {user, token, setUser, setToken} = useStateContext();
+  const {token} = useStateContext();
   
   if (!token) {
     return <Navigate to="/login"/>
@@ -15,9 +15,11 @@ const AdminLayout = (props: Props) => {
       {/* <div className="w-full">
         <Navbar />
       </div> */}
-      <div className="flex flex-row h-full bg-snow-drift-50">
+      <div className="flex flex-row h-full w-full bg-snow-drift-50">
         <Sidebar />
-        <Outlet/>
+        <div className="flex items-center justify-center flex-1">
+          <Outlet/>
+        </div>
       </div>
     </div>
     </>

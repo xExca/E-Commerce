@@ -10,7 +10,7 @@ import { useStateContext } from "../utils/ContextProvider";
 import { useState } from "react";
 import axiosAPI from "../utils/axios-api";
 const Sidebar = () => {
-  const {user,setUser, setToken} = useStateContext();
+  const {user,setUser, setToken, checkPermission} = useStateContext();
   const [dropdownOpen,setDropdownOpen] = useState<boolean>(false);
 
   const onLogout = (e: any) => {
@@ -41,29 +41,31 @@ const Sidebar = () => {
             </div>
             
             <ul>
-                <li>
-                    <Link to={'/admin/dashboard'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
+                {checkPermission('manage_features') &&
+                  <li>
+                    <Link to={'/dashboard'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
                         <GoHomeFill />
                         <span>Dashboard</span>
                     </Link>
-                </li>
+                  </li>
+                }
                 <li>
-                    <Link to={'/admin/users'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
+                    <Link to={'/users'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
                         <FaUserFriends />
                         <span>Users</span>
                     </Link>
                 </li>
                 <li>
-                    <a className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
+                    <Link to={'/orders'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
                         <IoMdCart />
                         <span>Order</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
+                    <Link to={'/sales'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
                         <MdPointOfSale />
                         <span>Sales</span>
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </div>

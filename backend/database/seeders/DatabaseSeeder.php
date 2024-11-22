@@ -16,31 +16,14 @@ class DatabaseSeeder extends Seeder
    */
   public function run(): void
   {
-    $userRole = Role::create(['name' => RoleEnum::User->value]);
-    $commenterRole = Role::create(['name' => RoleEnum::Commenter->value]);
-    $adminRole = Role::create(['name' => RoleEnum::Admin->value]);
     
-
-    $manageFeaturesPermission = Permission::create([
-      'name' => PermissionEnum::ManageFeatures->value,
+    $this->call([
+      RoleSeeder::class,
+      PermissionSeeder::class,
+      RolePermissionSeeder::class,
     ]);
 
-    $manageCommentsPermission = Permission::create([
-      'name' => PermissionEnum::ManageComments->value,
-    ]);
-    $managePostPermission = Permission::create([
-      'name' => PermissionEnum::ManagePosts->value,
-    ]);
-    $manageUsersPermission = Permission::create([
-      'name' => PermissionEnum::ManageUsers->value,
-    ]);
-    $upvoteDownvotePermission = Permission::create([
-      'name' => PermissionEnum::upvoteDownvotePermission->value,
-    ]);
-
-    $userRole->syncPermissions([$upvoteDownvotePermission]);
-    $commenterRole->syncPermissions([$manageFeaturesPermission, $manageCommentsPermission]);
-    $adminRole->syncPermissions([$manageFeaturesPermission, $manageCommentsPermission, $managePostPermission, $manageUsersPermission,$upvoteDownvotePermission]);
+    
     User::factory()->create([
       'firstname' => 'John',
       'middlename' => 'B',
@@ -57,7 +40,7 @@ class DatabaseSeeder extends Seeder
       'email' => 'commenter@email.com',
       'username' => 'commenter',
       'password'=> bcrypt('1234'),
-    ])->assignRole(RoleEnum::Commenter);
+    ])->assignRole(RoleEnum::Staff);
     
     User::factory()->create([
       'firstname' => 'Joe',

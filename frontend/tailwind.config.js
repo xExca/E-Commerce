@@ -7,16 +7,7 @@ export default {
   ],
   theme: {
     colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      'white': '#ffffff',
-      'black': '#000000',
-      black: colors.black,
-      white: colors.white,
-      gray: colors.neutral,
-      indigo: colors.indigo,
-      red: colors.rose,
-      yellow: colors.amber,
+      ...colors,
       'moss-green': {
         '50': '#f5f9f4',
         '100': '#e7f3e5',

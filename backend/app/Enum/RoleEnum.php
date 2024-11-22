@@ -6,13 +6,13 @@ enum RoleEnum:string
 {
     case Admin = 'admin';
     case User = 'user';
-    case Commenter = 'commenter';
+    case Staff = 'staff';
 
     public static function labels(){
       return [
         self::Admin => 'Admin',
         self::User => 'User',
-        self::Commenter => 'Commenter',
+        self::Staff => 'Staff',
       ];
     }
 
@@ -20,7 +20,7 @@ enum RoleEnum:string
       return match($this){
         self::Admin => 'Admin',
         self::User => 'User',
-        self::Commenter => 'Commenter',
+        self::Staff => 'Staff',
       };
     }
 }

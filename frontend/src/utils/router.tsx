@@ -10,6 +10,8 @@ import Dashboard from "../pages/admin/Dashboard";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import React from "react";
 import Users from "../pages/admin/Users";
+import RoleTable from "../pages/admin/RoleTable";
+import RoleEdit from "../pages/admin/RoleEdit";
 
 const AppRoute: React.FC = () => {
   return (
@@ -21,13 +23,15 @@ const AppRoute: React.FC = () => {
           <Route path="signup" element={<MainDefault type={"Register"} />} />
           <Route path="test" element={<TestingForm />} />
         </Route>
-        <Route path='/admin/*' element={<AdminLayout />}>
+        <Route path='/*' element={<AdminLayout />}>
           <Route path='dashboard' element={<Dashboard />} />
           <Route path="users" element={<Users />} />
+          <Route path="roles" element={<RoleTable />} />
+          <Route path="roles/:id" element={<RoleEdit />} />
         </Route>
         <Route path='/user' element={<UserLayout/>}>
-        <Route path="/user/dashboard" element={<AdminDashboard />} />
-      </Route>
+          <Route path="/user/dashboard" element={<AdminDashboard />} />
+        </Route>
       <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
     </BrowserRouter>

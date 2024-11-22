@@ -50,4 +50,8 @@ class User extends Authenticatable
       'password' => 'hashed',
     ];
   }
+  public function getRoleNames()
+    {
+        return $this->roles()->pluck('name');
+    }
 }

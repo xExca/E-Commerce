@@ -9,4 +9,8 @@ enum PermissionEnum: string
     case ManageComments = 'manage_comments';
     case ManagePosts = 'manage_posts';
     case upvoteDownvotePermission = 'update_downvote';
+    case viewDashbaord = 'view_dashboard';
+    case viewUser = 'view_user';
+    case viewOrder = 'view_order';
+    case viewSales = 'view_sales';
 }

@@ -39,7 +39,8 @@ const LoginForm = () =>{
                 middlename,
                 lastname,
                 id,
-                email
+                email,
+                permissions: response.data.permissions
               })
               setToken(response.data.token)
             }
