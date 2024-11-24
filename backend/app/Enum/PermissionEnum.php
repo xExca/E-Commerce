@@ -13,4 +13,5 @@ enum PermissionEnum: string
     case viewUser = 'view_user';
     case viewOrder = 'view_order';
     case viewSales = 'view_sales';
+    case viewRoles = 'view_roles';
 }

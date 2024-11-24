@@ -14,8 +14,8 @@ class RoleController extends Controller
     {
       $role = Role::all()->map(function ($role) {
         return [
-            'id' => $role->id,
-            'name' => $role->name,
+            'value' => $role->id,
+            'label' => $role->name,
           ];
       });
       return response()->json($role);

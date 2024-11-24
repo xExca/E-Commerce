@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -13,7 +15,20 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all()->map(function($user) {
+            return [
+                'id' => $user->id,
+                'firstname' => $user->firstname,
+                'middlename' => $user->middlename,
+                'lastname' => $user->lastname,
+                'email' => $user->email,
+                'role' => [
+                    'value' => $user->roles->first()->id,
+                    'label' => $user->getRoleNames()->first()
+                ]
+            ];
+        })->toArray();
+        return response()->json($users);
     }
 
     /**
@@ -29,11 +44,19 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-      $data = $user->select('id','firstname','middlename','lastname','email')->first();
-      $role = $user->roles->first()->only(['id','name']);
-      $data['role'] = $role;
-      
-      return response()->json($data);
+        $data = [
+            'id' => $user->id,
+            'firstname' => $user->firstname,
+            'middlename' => $user->middlename,
+            'lastname' => $user->lastname,
+            'email' => $user->email,
+            'role' => [
+                'value' => $user->roles->first()->id,
+                'label' => $user->roles->first()->name,
+            ],
+        ];
+
+        return response()->json($data);
     }
 
     /**
@@ -41,8 +64,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->syncRoles($request->role);
-        $user->update($request->all());
+        $user->syncRoles($request->role['label']);
+        $user->update([
+          'firstname' => $request->firstname,
+          'middlename' => $request->middlename,
+          'lastname' => $request->lastname,
+          'email' => $request->email
+        ]);
         return response()->json(['message' =>  'permissions updated']);
     }
 
