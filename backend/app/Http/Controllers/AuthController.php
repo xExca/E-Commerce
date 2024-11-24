@@ -13,19 +13,15 @@ class AuthController extends Controller
 {
   public function login(LoginRequest $request)
   {
-    return response(['user' => $request->user()]);
     $creds = $request->validated();
-    if (!Auth::attempt($creds)) {
-      return response([
-        'message' => 'Provided email address or password is incorrect'
-      ], 422);
+    $auth = Auth::attempt($creds);
+    if(!$auth ) {
+      return response()->json(['message' => 'Invalid credentials'], 401);
     }
-
     $user = Auth::user();
-
-    return response([
-      'user' => $user
-    ]);
+    $permissions  = $user->getAllPermissions()->pluck('name')->toArray();
+    $token = $user->createToken('main')->plainTextToken;
+    return response(compact('user', 'token', 'permissions'));
   }
   public function checkEmail(Request $request)
   {
@@ -45,4 +41,9 @@ class AuthController extends Controller
   }
   return response(['message' => 'Error creating user'], 500);
   } 
+
+  public function logout(Request $request){
+    Auth::logout();
+    return response()->json(['message'=> 'Logout successful'],200);
+  }
 }

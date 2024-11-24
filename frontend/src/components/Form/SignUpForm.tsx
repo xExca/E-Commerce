@@ -1,20 +1,14 @@
-import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik"
+import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
-import TextError from "../TextError"
 import axiosAPI from "../../utils/axios-api"
-import { ValidationError } from "yup"
-import { useContext } from "react"
-import { AuthContext } from "../../utils/ContextProvider"
-import Swal from 'sweetalert2'
-import { useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
+import TextError from "../TextError"
 
 interface EmailValidationResponse {
   exists: boolean;
 }
 
 const SignUpForm = () => {
-
-
   return (
     <Formik
       initialValues={{
@@ -29,21 +23,30 @@ const SignUpForm = () => {
       }}
       onSubmit={(values, { setSubmitting }) => {
         console.log(`Payload`, values)
-        // axiosAPI.post('/register', values)
-        //   .then((response) => {
-        //     if (response.data.success) {
-        //       Swal.fire({
-        //         position: "center",
-        //         icon: "success",
-        //         title: "Your work has been saved",
-        //         showConfirmButton: false,
-        //         timer: 1500
-        //       });
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     console.log(error)
-        //   })
+        axiosAPI.post('/register', values)
+          .then((response) => {
+            if (response.data.success) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your work has been saved",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.href = "/login"
+                }
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            Swal.fire({
+              position: "center",
+              icon: "warning",
+              title: "Something went wrong",
+              text: error.response.data.message,
+              showConfirmButton: false,
+            });
+          })
 
         setSubmitting(false);
 
@@ -79,29 +82,6 @@ const SignUpForm = () => {
             <ErrorMessage name="password" component={TextError} />
             <Field type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password" className="border rounded p-2" aria-label="Confirm Password" aria-required="true" />
             <ErrorMessage name="password_confirmation" component={TextError} />
-            <FieldArray name="phNumbers">
-              {
-                (fieldArrayProps) => {
-                  console.log(`Field Array`, fieldArrayProps)
-                  const { push, remove, form } = fieldArrayProps
-                  const { values } = form
-                  const { phNumbers } = values
-                  return (
-                    <div>
-                      {
-                        phNumbers.map((phNumber, index) => (
-                          <div key={index}>
-                            <Field name={`phNumbers[${index}]`} />
-                            <button type='button' onClick={() => remove(index)}> - </button>
-                            <button type='button' onClick={() => push('')}> + </button>
-                          </div>
-                        ))
-                      }
-                    </div>
-                  )
-                }
-              }
-            </FieldArray>
             <button type="submit" className="bg-lime-300 border rounded-md mt-8 p-2" disabled={isSubmitting}>
               {isSubmitting ? 'Submitting...' : 'Login'}
             </button>

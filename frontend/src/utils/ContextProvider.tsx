@@ -1,54 +1,71 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext,useContext,useState, useEffect } from "react";
 
-type useAuthProps = {
-  currentUser: string;
-  token: string;
-  isLoggedIn: boolean;
-  setUser: React.Dispatch<React.SetStateAction<string>>;
-  setToken: React.Dispatch<React.SetStateAction<string>>;
+
+type AuthContextType = {
+  user: UserType | null;
+  token: string | null;
+  setUser: (user:any) => void;
+  setToken: (token: string|null) => void;
+  checkPermission: (permission: string| undefined) => boolean;
 };
 
-type AuthProviderProps = {
-  children: React.ReactNode;
+type UserType = {
+  firstname: string,
+  middlename: string,
+  lastname: string,
+  id: number | null,
+  email: string
+  permissions: string[]
 }
 
-const AuthContext = createContext<useAuthProps>({
-  currentUser: "",
-  token: "",
-  isLoggedIn: false,
-  setUser: () => { },
-  setToken: () => { }
-})
+const AuthContext = createContext<AuthContextType>({
+  user:null,
+  token: null,
+  setUser: () => {},
+  setToken: () => {},
+  checkPermission: () => false,
+});
 
-const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = React.useState<string>("");
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [token, setToken] = useState<string>("");
+
+export const ContextProvider = ({children}: {children: React.ReactNode}) => {
+    const [user, setUser] = useState<UserType | null>(() => {
+    const storedUser = sessionStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const [token, _setToken] = useState<string | null>(localStorage.getItem('ACCESS_TOKEN') || null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsLoggedIn(true);
+    if (user) {
+      sessionStorage.setItem("user", JSON.stringify(user));
+    } else {
+      sessionStorage.removeItem("user");
     }
-  }, []);
+  }, [user]);
+  const setToken = (token: string | null) => {
+    _setToken(token)
+    if(token){
+      localStorage.setItem('ACCESS_TOKEN', token)
+    } else{
+      localStorage.removeItem('ACCESS_TOKEN')
+    }
+  }
+  const checkPermission = (permission: string | undefined) => {
+    if (!user) return false;
+    return user.permissions.includes(permission ?? '');
+  };
 
   return (
     <AuthContext.Provider value={{
-      currentUser: user,
+      user,
+      setUser, 
       token,
-      isLoggedIn,
-      setUser,
       setToken,
-    }}>
-      {children}
+      checkPermission
+      }}>
+        {children}
     </AuthContext.Provider>
-  );
-};
-
-const useAuth = () => {
-  return useContext(AuthContext);
+  )
 }
 
 
-export { AuthProvider, AuthContext, useAuth }
+export const useStateContext = () => useContext(AuthContext)

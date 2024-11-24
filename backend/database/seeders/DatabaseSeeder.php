@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\JobListing;
-use App\Models\RoleListing;
 use App\Models\User;
-use App\Models\UserRole;
+use App\Enum\RoleEnum;
+use App\Enum\PermissionEnum;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +16,39 @@ class DatabaseSeeder extends Seeder
    */
   public function run(): void
   {
+    
+    $this->call([
+      RoleSeeder::class,
+      PermissionSeeder::class,
+      RolePermissionSeeder::class,
+    ]);
 
-    RoleListing::create(['name' => 'admin']);
-    RoleListing::create(['name' => 'buyer']);
-    RoleListing::create(['name' => 'seller']);
+    
+    User::factory()->create([
+      'firstname' => 'John',
+      'middlename' => 'B',
+      'lastname' => 'Doe',
+      'email' => 'admin@email.com',
+      'username' => 'admin',
+      'password'=> bcrypt('1234'),
+    ])->assignRole(RoleEnum::Admin);
 
-    User::factory(10)->create();
+    User::factory()->create([
+      'firstname' => 'Jane',
+      'middlename' => 'A',
+      'lastname' => 'Doe',
+      'email' => 'commenter@email.com',
+      'username' => 'commenter',
+      'password'=> bcrypt('1234'),
+    ])->assignRole(RoleEnum::Staff);
+    
+    User::factory()->create([
+      'firstname' => 'Joe',
+      'middlename' => 'C',
+      'lastname' => 'Doe',
+      'email' => 'user@email.com',
+      'username' => 'user',
+      'password'=> bcrypt('1234'),
+    ])->assignRole(RoleEnum::User);
   }
 }
