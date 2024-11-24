@@ -1,5 +1,5 @@
-import { TableContainer, Paper,Table, TableHead, TableRow, TableCell, TableBody, Button, Modal,Box,Typography } from "@mui/material"
-import axiosAPI from "../../utils/axios-api";
+import { TableContainer, Paper,Table, TableHead, TableRow, TableCell, TableBody, Button, Modal } from "@mui/material"
+import axiosAPI from "../../../utils/axios-api";
 import { useEffect,useState } from "react";
 import { Formik,Form, Field, ErrorMessage } from "formik";
 import {TextField} from "@mui/material";
@@ -13,10 +13,7 @@ type FieldProps = {
 type RoleData = {
   id: number;
   name: string;
-  permissions: {
-    value: number;
-    label: string;
-  }
+  permissions: PermissionData;
 }
 type PermissionData = {
   value: number;
@@ -51,6 +48,7 @@ const RoleTable = () => {
       console.error(error);
     });
   }
+  
   const fetchPermissionData = async () => {
     await axiosAPI.get("/admin/permissions")
     .then((response) => {
@@ -82,7 +80,7 @@ const RoleTable = () => {
           <TableBody>
             {roleList.map((role: any) => (
               <TableRow>
-              <TableCell>{role.name}</TableCell>
+              <TableCell>{role.label}</TableCell>
               <TableCell align="center">
                 <div className="flex flex-row items-center justify-center gap-3">
                   <Button variant="contained" color="primary" onClick={()=>handleEditModal(role.id)}>Edit</Button>
@@ -94,8 +92,6 @@ const RoleTable = () => {
         </Table>
       </TableContainer>
 
-      
-      <Button onClick={() => handleEditModal(2)}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}

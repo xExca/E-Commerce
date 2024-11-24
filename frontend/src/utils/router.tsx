@@ -7,11 +7,12 @@ import AdminDashboard from "../components/Admin/AdminDashboard";
 import TestingForm from "../components/Form/TestingForm";
 import AdminLayout from "../layouts/AdminLayout";
 import Dashboard from "../pages/admin/Dashboard";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
-import Users from "../pages/admin/Users";
-import RoleTable from "../pages/admin/RoleTable";
-import RoleEdit from "../pages/admin/RoleEdit";
+import RoleTable from "../pages/admin/roles/RoleTable";
+import RoleEdit from "../pages/admin/roles/RoleEdit";
+import UserTable from "../pages/admin/users/UserTable";
+import Users from "../pages/admin/users/Users";
 
 const AppRoute: React.FC = () => {
   return (
@@ -25,7 +26,7 @@ const AppRoute: React.FC = () => {
         </Route>
         <Route path='/*' element={<AdminLayout />}>
           <Route path='dashboard' element={<Dashboard />} />
-          <Route path="users" element={<Users />} />
+          <Route path="users" element={<UserTable />} />
           <Route path="roles" element={<RoleTable />} />
           <Route path="roles/:id" element={<RoleEdit />} />
         </Route>

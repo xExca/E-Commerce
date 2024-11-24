@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import { useParams } from "react-router-dom"
-import axiosAPI from "../../utils/axios-api";
+import axiosAPI from "../../../utils/axios-api";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";

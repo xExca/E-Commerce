@@ -28,7 +28,7 @@ const AuthContext = createContext<AuthContextType>({
 
 
 export const ContextProvider = ({children}: {children: React.ReactNode}) => {
-  const [user, setUser] = useState<UserType | null>(() => {
+    const [user, setUser] = useState<UserType | null>(() => {
     const storedUser = sessionStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });

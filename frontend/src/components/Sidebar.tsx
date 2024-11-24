@@ -67,6 +67,14 @@ const Sidebar = () => {
                         <span>Sales</span>
                     </Link>
                 </li>
+                {checkPermission('view_roles') &&
+                  <li>
+                    <Link to={'/roles'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
+                        <MdPointOfSale />
+                        <span>Roles</span>
+                    </Link>
+                  </li>
+                }
             </ul>
         </div>
         <div>
@@ -81,7 +89,7 @@ const Sidebar = () => {
           <button className='flex items-center gap-2 pl-4 py-3 m-2 cursor-pointer bg-snow-drift-50 text-neutral-800 rounded-md w-48 max-w-[240px]' onClick={() => setDropdownOpen(!dropdownOpen)}>
               <FaCircleUser />
               <span className='truncate'> 
-                  {`${user?.lastname}, ${user?.firstname} ${user?.middlename}`}
+                  {`${user?.lastname }, ${user?.firstname} ${user?.middlename}`}
               </span>
           </button>
         </div>
