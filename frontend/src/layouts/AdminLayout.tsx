@@ -4,9 +4,9 @@ import { useStateContext } from "../utils/ContextProvider";
 import Sidebar from "../components/Sidebar";
 type Props = {}
 const AdminLayout = (props: Props) => {
-  const {token} = useStateContext();
+  const {token, user} = useStateContext();
   
-  if (!token) {
+  if (!token || !user) {
     return <Navigate to="/login"/>
   }
   return (

@@ -35,11 +35,11 @@ class AuthController extends Controller
   public function register(RegisterRequest $request)
   {
     $request->validated();
-  $user = User::create($request->all());
-  if ($user) {
-    return response(['success' => true]);
-  }
-  return response(['message' => 'Error creating user'], 500);
+    $user = User::create($request->all());
+    if ($user) {
+      return response(['success' => true]);
+    }
+    return response(['message' => 'Error creating user'], 500);
   } 
 
   public function logout(Request $request){

@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all()->map(function($user) {
+        return User::paginate(10)->map(function($user) {
             return [
                 'id' => $user->id,
                 'firstname' => $user->firstname,
@@ -27,7 +27,7 @@ class UserController extends Controller
                     'label' => $user->getRoleNames()->first()
                 ]
             ];
-        })->toArray();
+        });
         return response()->json($users);
     }
 

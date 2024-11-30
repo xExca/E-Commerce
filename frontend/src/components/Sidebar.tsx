@@ -5,14 +5,15 @@ import { BsFillMouse3Fill } from "react-icons/bs";
 import { FaUserFriends } from "react-icons/fa";
 import { IoMdCart } from "react-icons/io";
 import { MdPointOfSale } from "react-icons/md";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useStateContext } from "../utils/ContextProvider";
 import { useState } from "react";
 import axiosAPI from "../utils/axios-api";
+
 const Sidebar = () => {
   const {user,setUser, setToken, checkPermission} = useStateContext();
   const [dropdownOpen,setDropdownOpen] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   const onLogout = (e: any) => {
     e.preventDefault();
 
@@ -20,6 +21,7 @@ const Sidebar = () => {
     .then(()=>{
       setUser(null)
       setToken(null)
+      navigate('/login')
     })
     .catch((err)=>{
       console.log(err)
