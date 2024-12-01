@@ -20,4 +20,16 @@ export const useGetAllRoles = () => {
 
 export const useGetAllPermissions = () =>{
   const [permissionList, setPermissionList] = useState([]);
+
+  useEffect(() => {
+    axiosAPI.get("/admin/permissions")
+    .then((response) => {
+      setPermissionList(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }, []);
+  
+  return permissionList;
 }

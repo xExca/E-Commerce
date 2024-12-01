@@ -17,8 +17,10 @@ const AdminLayout = (props: Props) => {
       </div> */}
       <div className="flex flex-row h-full w-full bg-snow-drift-50">
         <Sidebar />
-        <div className="flex items-center justify-center flex-1">
-          <Outlet/>
+        <div className="flex items-center justify-center flex-1 p-10">
+          <div className="bg-slate-100 w-full h-full rounded-lg shadow-2xl p-4 border-solid border-2 border-snow-drift-100 overflow-auto">
+            <Outlet/>
+          </div>
         </div>
       </div>
     </div>

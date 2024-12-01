@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { useGetAllRoles } from "../../../utils/hooks/permissions-hooks";
 import Select from "react-select";
 import Swal from "sweetalert2";
+import { MdDelete, MdModeEditOutline } from "react-icons/md";
 
 type UserData = {
   id: number;
@@ -30,6 +31,7 @@ const UserTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalLoading, setIsModalLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+<<<<<<< Updated upstream
   console.log(userList);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -38,6 +40,9 @@ const UserTable = () => {
   setRowsPerPage(parseInt(event.target.value, 10));
   setPage(0);  // Reset the table to the first page whenever rows per page changes
 };
+=======
+  
+>>>>>>> Stashed changes
   const onHandleModal = async (id: number) => {
     await axiosAPI.get(`/admin/users/${id}`)
       .then((response) => {
@@ -47,6 +52,14 @@ const UserTable = () => {
       console.error(error);
     }).finally(() => {
       setIsModalLoading(false);
+    })
+  }
+  const onHandleDelete = async (id: number) => {
+    await axiosAPI.delete(`/admin/users/${id}`)
+    .then((response)=>{
+      Swal.fire({
+        
+      })
     })
   }
   
@@ -67,6 +80,7 @@ const UserTable = () => {
   if (isLoading) return <p>Loading...</p>;
   return (
     <>
+<<<<<<< Updated upstream
      <div className="p-4">
      <TableContainer>
         <Table>
@@ -95,6 +109,39 @@ const UserTable = () => {
                   </div>
                 </TableCell>
               </TableRow>
+=======
+      <TableContainer className="rounded-lg border-solid border-2 border-snow-drift-100 h-full">
+        <Table className="border-solid border-snow-drift-100">
+          <TableHead>
+            <TableRow>
+              <TableCell className="font-bold ">First Name</TableCell>
+              <TableCell className="font-bold">Middle Name</TableCell>
+              <TableCell className="font-bold">Last Name</TableCell>
+              <TableCell className="font-bold">Email</TableCell>
+              <TableCell className="font-bold">Role</TableCell>
+              <TableCell align="center" className="!font-bold">Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {userList.map((row, index) => (
+              user?.id !== row.id ? (
+                <>
+                  <TableRow key={index}>
+                    <TableCell className="font-semibold">{row.firstname}</TableCell>
+                    <TableCell className="font-semibold">{row.middlename}</TableCell>
+                    <TableCell className="font-semibold">{row.lastname}</TableCell>
+                    <TableCell className="font-semibold">{row.email}</TableCell>
+                    <TableCell className="font-semibold">{row.role.label}</TableCell>
+                    <TableCell  className="font-semibold" align="center">
+                      <div className="flex flex-row gap-2 justify-center">
+                        <button className="p-2 bg-yellow-300 rounded-lg" onClick={() => onHandleModal(row.id)}><MdModeEditOutline className="text-2xl"/></button>
+                        <button className="p-2 bg-red-500 rounded-lg" onClick={() => onHandleDelete(row.id)}><MdDelete className="text-2xl"/></button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                </>
+              ) : null
+>>>>>>> Stashed changes
             ))}
           </TableBody>
         </Table>
@@ -152,6 +199,12 @@ const UserTable = () => {
                   setSubmitting(false);
                 });
               }}
+              validationSchema={Yup.object({
+                firstname: Yup.string().required("First Name is required"),
+                middlename: Yup.string().required("Middle Name is required"),
+                lastname: Yup.string().required('Last Name is required'),
+                email: Yup.string().required('email is required'),
+              })}
             >
               {({values, setFieldValue}) => (
                 <Form className="space-y-4">

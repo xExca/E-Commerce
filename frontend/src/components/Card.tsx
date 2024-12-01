@@ -1,4 +1,5 @@
 type Props = {
+<<<<<<< Updated upstream
   image: string;
   name: string;
   price: number;
@@ -53,6 +54,25 @@ function Card({ image, name ,price, discount, isVisibleRating = false, rating}: 
         </div>
       </div>
     </div>
+=======
+  count: number
+  text: string
+  link: string
+}
+function Card({count,text,link}: Props) {
+  return (
+    <a href={link}>
+      <div className="bg-white shadow-md rounded-lg p-6 w-80 text-left">
+        <div className="flex justify-start items-center mb-4">
+          <div className="text-green-700 text-5xl">
+            <IoDocument />
+          </div>
+        </div>
+        <div className="text-green-700 text-4xl font-bold mb-2">{count}</div>
+        <div className="text-gray-700 font-medium text-2xl">{text}</div>
+      </div>
+    </a>
+>>>>>>> Stashed changes
   )
 }
 export default Card
