@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import axiosAPI from "../../../utils/axios-api";
-import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Button,Modal } from "@mui/material";
+import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody,Modal, TablePagination, Button } from "@mui/material";
 import { useStateContext } from "../../../utils/ContextProvider";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import * as Yup from "yup";
 import { useGetAllRoles } from "../../../utils/hooks/permissions-hooks";
 import Select from "react-select";
 import Swal from "sweetalert2";
+import { MdDelete, MdModeEditOutline } from "react-icons/md";
 
 type UserData = {
   id: number;
@@ -21,6 +22,8 @@ type RoleList = {
   label:string;
 }
 const UserTable = () => {
+  const [page, setPage] = useState(0);  // Current page index
+  const [rowsPerPage, setRowsPerPage] = useState(5);  // Number of rows per page
   const {user} = useStateContext();
   const [userList, setUserList] = useState<UserData[]>([]);
   const [_user, setUser] = useState<UserData | null>(null);
@@ -28,7 +31,18 @@ const UserTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalLoading, setIsModalLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+<<<<<<< Updated upstream
   console.log(userList);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+ };
+ const handleChangeRowsPerPage = (event) => {
+  setRowsPerPage(parseInt(event.target.value, 10));
+  setPage(0);  // Reset the table to the first page whenever rows per page changes
+};
+=======
+  
+>>>>>>> Stashed changes
   const onHandleModal = async (id: number) => {
     await axiosAPI.get(`/admin/users/${id}`)
       .then((response) => {
@@ -38,6 +52,14 @@ const UserTable = () => {
       console.error(error);
     }).finally(() => {
       setIsModalLoading(false);
+    })
+  }
+  const onHandleDelete = async (id: number) => {
+    await axiosAPI.delete(`/admin/users/${id}`)
+    .then((response)=>{
+      Swal.fire({
+        
+      })
     })
   }
   
@@ -58,16 +80,46 @@ const UserTable = () => {
   if (isLoading) return <p>Loading...</p>;
   return (
     <>
-      <TableContainer>
+<<<<<<< Updated upstream
+     <div className="p-4">
+     <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>First Name</TableCell>
-              <TableCell>Middle Name</TableCell>
-              <TableCell>Last Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Role</TableCell>
+              <TableCell align="center">Firstname</TableCell>
+              <TableCell align="center">Middlename</TableCell>
+              <TableCell align="center">Lastname</TableCell>
+              <TableCell align="center">Email</TableCell>
+              <TableCell align="center">Role</TableCell>
               <TableCell align="center">Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {userList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+              <TableRow key={row.id}>
+                <TableCell align="center">{row.firstname}</TableCell>
+                <TableCell align="center">{row.middlename}</TableCell>
+                <TableCell align="center">{row.lastname}</TableCell>
+                <TableCell align="center">{row.email}</TableCell>
+                <TableCell align="center">{row.role.label}</TableCell>
+                <TableCell align="center">
+                  <div className="flex flex-row gap-2">
+                    <Button variant="contained" color="primary" onClick={() => onHandleModal(row.id)}>Edit</Button>
+                    <Button variant="contained" color="secondary" href="#">Delete</Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+=======
+      <TableContainer className="rounded-lg border-solid border-2 border-snow-drift-100 h-full">
+        <Table className="border-solid border-snow-drift-100">
+          <TableHead>
+            <TableRow>
+              <TableCell className="font-bold ">First Name</TableCell>
+              <TableCell className="font-bold">Middle Name</TableCell>
+              <TableCell className="font-bold">Last Name</TableCell>
+              <TableCell className="font-bold">Email</TableCell>
+              <TableCell className="font-bold">Role</TableCell>
+              <TableCell align="center" className="!font-bold">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -75,24 +127,35 @@ const UserTable = () => {
               user?.id !== row.id ? (
                 <>
                   <TableRow key={index}>
-                    <TableCell>{row.firstname}</TableCell>
-                    <TableCell>{row.middlename}</TableCell>
-                    <TableCell>{row.lastname}</TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.role.label}</TableCell>
-                    <TableCell>
-                      <div className="flex flex-row gap-2">
-                        <Button variant="contained" color="primary" onClick={() => onHandleModal(row.id)}>Edit</Button>
-                        <Button variant="contained" color="secondary" href="#">Delete</Button>
+                    <TableCell className="font-semibold">{row.firstname}</TableCell>
+                    <TableCell className="font-semibold">{row.middlename}</TableCell>
+                    <TableCell className="font-semibold">{row.lastname}</TableCell>
+                    <TableCell className="font-semibold">{row.email}</TableCell>
+                    <TableCell className="font-semibold">{row.role.label}</TableCell>
+                    <TableCell  className="font-semibold" align="center">
+                      <div className="flex flex-row gap-2 justify-center">
+                        <button className="p-2 bg-yellow-300 rounded-lg" onClick={() => onHandleModal(row.id)}><MdModeEditOutline className="text-2xl"/></button>
+                        <button className="p-2 bg-red-500 rounded-lg" onClick={() => onHandleDelete(row.id)}><MdDelete className="text-2xl"/></button>
                       </div>
                     </TableCell>
                   </TableRow>
                 </>
               ) : null
+>>>>>>> Stashed changes
             ))}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={userList.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
+     </div>
 
       <Modal
       open={isModalOpen}
@@ -136,6 +199,12 @@ const UserTable = () => {
                   setSubmitting(false);
                 });
               }}
+              validationSchema={Yup.object({
+                firstname: Yup.string().required("First Name is required"),
+                middlename: Yup.string().required("Middle Name is required"),
+                lastname: Yup.string().required('Last Name is required'),
+                email: Yup.string().required('email is required'),
+              })}
             >
               {({values, setFieldValue}) => (
                 <Form className="space-y-4">

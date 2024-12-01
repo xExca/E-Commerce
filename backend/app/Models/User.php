@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\ProductRating;
 
 class User extends Authenticatable
 {
@@ -50,8 +51,11 @@ class User extends Authenticatable
       'password' => 'hashed',
     ];
   }
-  public function getRoleNames()
-    {
-        return $this->roles()->pluck('name');
-    }
+  public function getRoleNames(){
+      return $this->roles()->pluck('name');
+  }
+
+  public function productRatings(){
+    return $this->hasMany(ProductRating::class);
+  }
 }

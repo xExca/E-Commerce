@@ -1,8 +1,6 @@
 import { MdPerson3 } from "react-icons/md";
 
 const Navbar = () => {
-
-
   return (
     <nav className="py-2 px-4 h-14 bg-white flex justify-between items-center">
       <h1 className="text-xl">Navbar</h1>

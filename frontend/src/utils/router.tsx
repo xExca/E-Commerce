@@ -13,27 +13,33 @@ import RoleTable from "../pages/admin/roles/RoleTable";
 import RoleEdit from "../pages/admin/roles/RoleEdit";
 import UserTable from "../pages/admin/users/UserTable";
 import Users from "../pages/admin/users/Users";
+import Home from "../pages/Home";
+import { useStateContext } from "./ContextProvider";
+import PrivateRoutes from "./PrivateRoutes";
 
 const AppRoute: React.FC = () => {
+  const {token} = useStateContext();
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/*" element={<DefaultLayout />}>
-          <Route path="login" element={<MainDefault type={"Login"} />} />
-          <Route index element={<MainDefault type={"Login"} />} />
-          <Route path="signup" element={<MainDefault type={"Register"} />} />
-          <Route path="test" element={<TestingForm />} />
-        </Route>
-        <Route path='/*' element={<AdminLayout />}>
-          <Route path='dashboard' element={<Dashboard />} />
-          <Route path="users" element={<UserTable />} />
-          <Route path="roles" element={<RoleTable />} />
-          <Route path="roles/:id" element={<RoleEdit />} />
-        </Route>
-        <Route path='/user' element={<UserLayout/>}>
-          <Route path="/user/dashboard" element={<AdminDashboard />} />
-        </Route>
-      <Route path="*" element={<NotFoundPage />}></Route>
+        <Route path="/home" element={<Home />}/>
+        <Route path="/test" element={<TestingForm />}/>
+        {!token ?
+          <Route path={'/'} element={<DefaultLayout />}>
+            <Route path="login" element={<MainDefault type={"Login"} />} />
+            <Route index element={<MainDefault type={"Login"} />} />
+            <Route path="signup" element={<MainDefault type={"Register"} />} />
+            <Route path="test" element={<TestingForm />} />
+          </Route>
+          :
+          <Route element={<AdminLayout />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path="/users" element={<UserTable />} />
+            <Route path="/roles" element={<RoleTable />} />
+            <Route path="/roles/:id" element={<RoleEdit />} />
+          </Route>
+        }
+        <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
     </BrowserRouter>
   );

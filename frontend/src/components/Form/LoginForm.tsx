@@ -3,6 +3,7 @@ import axiosAPI from "../../utils/axios-api"
 import * as Yup from "yup"
 import { useState,useEffect } from "react"
 import { useStateContext } from "../../utils/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 interface ErrorType {
   message: string;
@@ -12,7 +13,7 @@ const LoginForm = () =>{
   const {setUser, setToken} = useStateContext()
   const [errors, setErrors] = useState<ErrorType>({ message: '' });
   const [showError, setShowError] = useState<boolean>(false);
-  
+  const navigate = useNavigate();
   useEffect(() => {
     if (errors.message) {
       setShowError(true);
@@ -43,6 +44,7 @@ const LoginForm = () =>{
                 permissions: response.data.permissions
               })
               setToken(response.data.token)
+              navigate('/dashboard')
             }
         })
           .catch(error => {

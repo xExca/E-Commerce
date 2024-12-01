@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { useStateContext } from "../utils/ContextProvider";
 
 type Props = {}
 const NotFoundPage = (props: Props) => {
+  const {token} = useStateContext();
   return (
     <>
 <main className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
@@ -18,7 +20,7 @@ const NotFoundPage = (props: Props) => {
         ></span>
 
         <span className="relative block px-8 py-3 bg-[#1A2238] border border-current">
-          <Link to="/">Go Home</Link>
+          <Link to={!token ? '/login' : '/dashboard'}>Go Home</Link>
         </span>
       </a>
     </button>

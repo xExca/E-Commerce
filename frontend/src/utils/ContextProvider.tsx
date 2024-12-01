@@ -29,16 +29,17 @@ const AuthContext = createContext<AuthContextType>({
 
 export const ContextProvider = ({children}: {children: React.ReactNode}) => {
     const [user, setUser] = useState<UserType | null>(() => {
-    const storedUser = sessionStorage.getItem("user");
+    const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const [token, _setToken] = useState<string | null>(localStorage.getItem('ACCESS_TOKEN') || null);
 
   useEffect(() => {
+
     if (user) {
-      sessionStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     } else {
-      sessionStorage.removeItem("user");
+      localStorage.removeItem("user");
     }
   }, [user]);
   const setToken = (token: string | null) => {

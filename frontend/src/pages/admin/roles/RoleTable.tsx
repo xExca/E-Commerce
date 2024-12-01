@@ -1,155 +1,119 @@
-import { TableContainer, Paper,Table, TableHead, TableRow, TableCell, TableBody, Button, Modal } from "@mui/material"
-import axiosAPI from "../../../utils/axios-api";
-import { useEffect,useState } from "react";
-import { Formik,Form, Field, ErrorMessage } from "formik";
-import {TextField} from "@mui/material";
+import axiosAPI from "../../../utils/axios-api"
+import { useEffect, useState } from "react";
+import { useGetAllPermissions } from "../../../utils/hooks/permissions-hooks";
+import { Modal, Box, Typography } from "@mui/material";
+import { Formik,Form,Field,ErrorMessage } from "formik";
+import * as Yup from "yup";
 import Select from "react-select";
-import Swal from "sweetalert2";
-const isLoading = true
-type FieldProps = {
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { GiBulletBill } from "react-icons/gi";
+import { LuDot } from "react-icons/lu";
+import { IoMdPersonAdd } from "react-icons/io";
+
 type RoleData = {
-  id: number;
-  name: string;
-  permissions: PermissionData;
+  value:number
+  label: string;
+  permission: PermissionData[];
 }
 type PermissionData = {
   value: number;
-  label: string;
+  label: string
 }
 
 const RoleTable = () => {
-  const [roleList, setRoleList] = useState([]);
-  const [roleData, setRoleData] = useState<RoleData | null>(null);
-  const [open, setOpen] = useState(false);
-  const [permissionList, setPermisisonList] = useState([])
-  const handleEditModal = async (id: number) => {
+  const [roleData, setRoleData] = useState<RoleData[]>([]);
+  const [role, setRole] = useState<RoleData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const permissionList = useGetAllPermissions();
+
+  const onHandleModal = async (id: number) => {
     await axiosAPI.get(`/admin/roles/${id}`)
-    .then((response) => {
-      setRoleData(response.data);
-      setOpen(true);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  };
-  const handleClose = () => {
-    setOpen(false);
-    
-  }
-  const fetchRoleData = async () => {
-    await axiosAPI.get("/admin/roles")
-    .then((response) => {
-      setRoleList(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
+    .then((response)=>{
+      setRole({
+        value: response.data.id,
+        label: response.data.name,
+        permission: response.data.permissions
+      })
+      setIsModalOpen(true)
+    }).catch((error)=>{
+      console.log(error)
     });
   }
-  
-  const fetchPermissionData = async () => {
-    await axiosAPI.get("/admin/permissions")
-    .then((response) => {
-      setPermisisonList(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
-  
   useEffect(() => {
-    fetchRoleData();
-    fetchPermissionData();
-  }, []);
+    axiosAPI.get("/admin/roles")
+    .then((response)=>{
+      setRoleData(response.data);
+    }).catch((error)=>{
+      console.log(error)
+    });
+  },[])
 
-
-
-  if (!isLoading) return <div>Loading...</div>
   return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Role</TableCell>
-              <TableCell align="center" colSpan={2}>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {roleList.map((role: any) => (
-              <TableRow>
-              <TableCell>{role.label}</TableCell>
-              <TableCell align="center">
-                <div className="flex flex-row items-center justify-center gap-3">
-                  <Button variant="contained" color="primary" onClick={()=>handleEditModal(role.id)}>Edit</Button>
-                  <Button variant="contained" color="secondary" href="#">Delete</Button>
-                </div></TableCell>
-            </TableRow>
-            ))}
-           </TableBody>
-        </Table>
-      </TableContainer>
-
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white border-2 border-black shadow-lg p-4">
-            <Formik
-            initialValues={{
-              id: roleData?.id,
-              rolename: roleData?.name,
-              permission: roleData?.permissions
-            }}
-            onSubmit={(values)=>{
-              axiosAPI.put(`admin/roles/${values.id}`, values)
-              .then((response) => {
-                Swal.fire({
-                  position: "center",
-                  icon: "success",
-                  title: response.data.message,
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-                fetchRoleData();
-                handleClose();
-              }).catch((error) => {
-                console.error(error);
-              });
-            }}
-            >
-            {({values}) => (
-              <Form>
-                <Field name="rolename">
-                  {({field,form:{isSubmitting}}: {field: FieldProps, form: {isSubmitting: boolean}}) => (
-                    <TextField
-                      {...field}
-                      value={field.value}
-                      label="Rolename"
-                      variant="outlined"
-                      fullWidth
-                      disabled={isSubmitting}
-                    />
-                  )}
-                </Field>
-                <ErrorMessage name="rolename" component="div" className="text-red-500" />
-                <Select
-                options={permissionList}
-                value={values.permission}
-                isMulti
-                />
-                <Button type="submit" variant="contained" color="primary">Submit</Button>
-              </Form>
-            )}
-            </Formik>
+    <>
+    <div className="grid grid-cols-4 gap-4 whitespace-nowrap">
+      <div className="bg-red-300 rounded-md p-4 w-full max-h-full flex items-center justify-center flex-col">
+        <button onClick={()=>{console.log('test')}}>
+          <div className="mx-auto"><IoMdPersonAdd size={120} /></div>
+          <div className="mx-auto text-xl">Test</div>
+        </button>
+      </div>
+      {[...Array(24)].map((_,i)=>(
+        <div key={i} className="bg-blue-300 rounded-md p-4 w-full h-auto flex flex-col gap-3">
+          <div>
+            <p className="font-bold text-xl"> Lorem</p>
+            <p className="text-sm">Total of users with this role:{i}</p>
+          </div>
+          <div className="p-2 bg-slate-300 rounded-md">
+              <p className="text-sm font-bold pl-2">Permissions</p>
+              <div className="flex flex-col overflow-x-auto h-[150px]">
+                {[...Array(10)].map((_,i)=>(
+                  <div className="flex flex-row gap-2 items-center">
+                    <div><LuDot className="text-3xl"/></div>
+                    <div>Lorem ipsum dolor sit amet</div>
+                  </div>
+                ))}
+              </div>
+          </div>
         </div>
-      </Modal>
+      ))}
     </div>
 
+      <Modal
+       open={isModalOpen}
+       onClose={() => setIsModalOpen(false)}
+       aria-labelledby="modal-modal-title"
+       aria-describedby="modal-modal-description"
+      >
+         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white border-2 border-black shadow-lg p-4">
+          <Formik
+          initialValues={{
+            id: role?.value ?? "",
+            role: role?.label ?? "",
+            permissions: role?.permission ?? [],
+          }}
+          onSubmit={(values) => {
+            console.log(values)
+          }}
+          validationSchema={Yup.object({
+            role: Yup.string().required("Role is required"),
+          })}
+          >
+            {({values, setFieldValue}) => (
+              <Form>
+              <Field type="text" name="role" />
+              <ErrorMessage name="role" component="div" />
+              <Select
+                options={permissionList}
+                value={values.permissions}
+                onChange={(e) => setFieldValue("permissions", e)}
+                isMulti
+              />
+              <button type="submit">Submit</button>
+            </Form>      
+            )}      
+          </Formik>
+        </div>
+      </Modal>
+    </>
   )
 }
 export default RoleTable
