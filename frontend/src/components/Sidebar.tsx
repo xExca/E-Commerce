@@ -1,18 +1,15 @@
-import { BiMenuAltRight } from "react-icons/bi";
-import { GoHomeFill } from "react-icons/go";
-import { FaCircleUser } from "react-icons/fa6";
-import { BsFillMouse3Fill } from "react-icons/bs";
-import { FaUserFriends } from "react-icons/fa";
-import { IoMdCart } from "react-icons/io";
-import { MdPointOfSale } from "react-icons/md";
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useStateContext } from "../utils/ContextProvider";
 import { useState } from "react";
 import axiosAPI from "../utils/axios-api";
+import Background from '../assets/image/image_2024-12-12_140928163-removebg-preview.png';
+import { MdEmail, MdHome, MdPerson, MdSettings } from 'react-icons/md';
+import { IoCartSharp, IoGrid } from 'react-icons/io5';
+import { FaBox } from 'react-icons/fa';
+import { FaArrowRightFromBracket, FaUserGroup } from 'react-icons/fa6';
 
 const Sidebar = () => {
   const {user,setUser, setToken, checkPermission} = useStateContext();
-  const [dropdownOpen,setDropdownOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const onLogout = (e: any) => {
     e.preventDefault();
@@ -29,73 +26,75 @@ const Sidebar = () => {
   }
 
   return (
-    <aside className='bg-moss-green-300 flex flex-col justify-between text-black h-auto'>
-        <div>
-            <div className='flex items-center gap-2 text-xl font-bold p-3'>
-                <BsFillMouse3Fill/>
-                <span> Build-A-PC</span>
-                <button 
-                    onClick = {() => {}}
-                    className='ml-auto cursor-pointer hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md p-3'>
-                    <BiMenuAltRight />
-                </button>
-                
-            </div>
-            
-            <ul>
-                {checkPermission('manage_features') &&
-                  <li>
-                    <Link to={'/dashboard'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
-                        <GoHomeFill />
-                        <span>Dashboard</span>
-                    </Link>
-                  </li>
-                }
-                <li>
-                    <Link to={'/users'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
-                        <FaUserFriends />
-                        <span>Users</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link to={'/orders'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
-                        <IoMdCart />
-                        <span>Order</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link to={'/sales'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
-                        <MdPointOfSale />
-                        <span>Sales</span>
-                    </Link>
-                </li>
-                {checkPermission('view_roles') &&
-                  <li>
-                    <Link to={'/roles'} className='flex items-center gap-2 pl-4 py-2 mx-2 cursor-pointer text-lg hover:bg-emerald-50 hover:text-neutral-800 hover:rounded-md'>
-                        <MdPointOfSale />
-                        <span>Roles</span>
-                    </Link>
-                  </li>
-                }
-            </ul>
+    <div className="bg-white min-w-64 h-screen flex flex-col justify-between">
+      <div className='flex flex-col'>
+        <div className='w-full'>
+          <img src={Background} className='w-full h-full object-cover' />
         </div>
-        <div>
-          {dropdownOpen && 
-            <>
-              <div id="dropdown" className="absolute left-2 bottom-16 mt-4 w-48 shadow-lg rounded-lg bg-snow-drift-50">
-                <p className="px-4 py-2 border-b cursor-pointer hover:bg-emerald-100 hover:rounded-t-lg">Profile</p>
-                <p className="px-4 py-2 cursor-pointer hover:bg-emerald-100 hover:rounded-b-lg" onClick={onLogout}>Logout</p>
-              </div>
-            </>
-          }
-          <button className='flex items-center gap-2 pl-4 py-3 m-2 cursor-pointer bg-snow-drift-50 text-neutral-800 rounded-md w-48 max-w-[240px]' onClick={() => setDropdownOpen(!dropdownOpen)}>
-              <FaCircleUser />
-              <span className='truncate'> 
-                  {`${user?.lastname }, ${user?.firstname} ${user?.middlename}`}
-              </span>
-          </button>
+        <div className='flex flex-col gap-2 text-lg font-semibold m-4'>
+          <NavLink
+            to='/dashboard'
+            className={({ isActive }) =>
+              `flex items-center gap-2 p-2 rounded-md ${isActive ? 'bg-blue-50 text-blue-500' : 'hover:bg-blue-50 hover:text-blue-500 text-gray-500'}`
+            }
+          >
+            <IoGrid size={30} />
+            <span>Dashboard</span>
+          </NavLink>
+          <NavLink
+            to='/orders'
+            className={({ isActive }) =>
+              `flex items-center gap-2 p-2 rounded-md ${isActive ? 'bg-blue-50 text-blue-500' : 'hover:bg-blue-50 hover:text-blue-500 text-gray-500'}`
+            }
+          >
+            <IoCartSharp size={30} />
+            <span>Orders</span>
+          </NavLink>
+          <NavLink
+            to='/products'
+            className={({ isActive }) =>
+              `flex items-center gap-2 p-2 rounded-md ${isActive ? 'bg-blue-50 text-blue-500' : 'hover:bg-blue-50 hover:text-blue-500 text-gray-500'}`
+            }
+          >
+            <FaBox size={30} />
+            <span>Products</span>
+          </NavLink>
+          <NavLink
+            to='/customer'
+            className={({ isActive }) =>
+              `flex items-center gap-2 p-2 rounded-md ${isActive ? 'bg-blue-50 text-blue-500' : 'hover:bg-blue-50 hover:text-blue-500 text-gray-500'}`
+            }
+          >
+            <FaUserGroup size={30} />
+            <span>Customer</span>
+          </NavLink>
+          <NavLink
+            to='/message'
+            className={({ isActive }) =>
+              `flex items-center gap-2 p-2 rounded-md ${isActive ? 'bg-blue-50 text-blue-500' : 'hover:bg-blue-50 hover:text-blue-500 text-gray-500'}`
+            }
+          >
+            <MdEmail size={30} />
+            <span>Message</span>
+          </NavLink>
+          <NavLink
+            to='/settings'
+            className={({ isActive }) =>
+              `flex items-center gap-2 p-2 rounded-md ${isActive ? 'bg-blue-50 text-blue-500' : 'hover:bg-blue-50 hover:text-blue-500 text-gray-500'}`
+            }
+          >
+            <MdSettings size={30} />
+            <span>Settings</span>
+          </NavLink>
         </div>
-    </aside>
+      </div>
+      <div className='flex flex-col gap-2 text-lg font-semibold m-4'>
+        <button onClick={onLogout} className='flex items-center gap-2 p-2 hover:bg-blue-50 hover:text-blue-500 text-gray-500 rounded-md'>
+          <FaArrowRightFromBracket size={24} />
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
   )
 }
 

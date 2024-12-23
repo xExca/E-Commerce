@@ -1,6 +1,5 @@
-import axiosAPI from "../../../utils/axios-api"
+
 import { useEffect, useState } from "react";
-import { useGetAllPermissions } from "../../../utils/hooks/permissions-hooks";
 import { Modal, Box, Typography } from "@mui/material";
 import { Formik,Form,Field,ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -8,6 +7,8 @@ import Select from "react-select";
 import { GiBulletBill } from "react-icons/gi";
 import { LuDot } from "react-icons/lu";
 import { IoMdPersonAdd } from "react-icons/io";
+import axiosAPI from "../../utils/axios-api";
+import { useGetAllPermissions } from "../../utils/hooks/permissions-hooks";
 
 type RoleData = {
   value:number

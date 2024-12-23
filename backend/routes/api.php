@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -24,5 +25,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('products', ProductController::class);
+    Route::resource('orders', OrderController::class);
     Route::get('permissions', [RoleController::class, 'permissions']);
+    
 })->middleware('auth:sanctum');

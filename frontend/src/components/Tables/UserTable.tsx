@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react"
-import axiosAPI from "../../../utils/axios-api";
 import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody,Modal, TablePagination, Button } from "@mui/material";
-import { useStateContext } from "../../../utils/ContextProvider";
+
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import * as Yup from "yup";
-import { useGetAllRoles } from "../../../utils/hooks/permissions-hooks";
 import Select from "react-select";
 import Swal from "sweetalert2";
-import { MdDelete, MdModeEditOutline } from "react-icons/md";
+import { MdDelete, MdDeleteForever, MdModeEditOutline } from "react-icons/md";
+import { useStateContext } from "../../utils/ContextProvider";
+import { useGetAllRoles } from "../../utils/hooks/permissions-hooks";
+import axiosAPI from "../../utils/axios-api";
+import { PropagateLoader } from "react-spinners";
+import { FaMehRollingEyes } from "react-icons/fa";
 
 type UserData = {
   id: number;
@@ -31,18 +34,15 @@ const UserTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalLoading, setIsModalLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-<<<<<<< Updated upstream
   console.log(userList);
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (event:any, newPage:any) => {
     setPage(newPage);
  };
- const handleChangeRowsPerPage = (event) => {
+ const handleChangeRowsPerPage = (event:any) => {
   setRowsPerPage(parseInt(event.target.value, 10));
   setPage(0);  // Reset the table to the first page whenever rows per page changes
 };
-=======
   
->>>>>>> Stashed changes
   const onHandleModal = async (id: number) => {
     await axiosAPI.get(`/admin/users/${id}`)
       .then((response) => {
@@ -77,85 +77,69 @@ const UserTable = () => {
     useFetchUserList();
   }, [])
 
-  if (isLoading) return <p>Loading...</p>;
   return (
     <>
-<<<<<<< Updated upstream
-     <div className="p-4">
-     <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Firstname</TableCell>
-              <TableCell align="center">Middlename</TableCell>
-              <TableCell align="center">Lastname</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Role</TableCell>
-              <TableCell align="center">Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {userList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <TableRow key={row.id}>
-                <TableCell align="center">{row.firstname}</TableCell>
-                <TableCell align="center">{row.middlename}</TableCell>
-                <TableCell align="center">{row.lastname}</TableCell>
-                <TableCell align="center">{row.email}</TableCell>
-                <TableCell align="center">{row.role.label}</TableCell>
-                <TableCell align="center">
-                  <div className="flex flex-row gap-2">
-                    <Button variant="contained" color="primary" onClick={() => onHandleModal(row.id)}>Edit</Button>
-                    <Button variant="contained" color="secondary" href="#">Delete</Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-=======
-      <TableContainer className="rounded-lg border-solid border-2 border-snow-drift-100 h-full">
-        <Table className="border-solid border-snow-drift-100">
-          <TableHead>
-            <TableRow>
-              <TableCell className="font-bold ">First Name</TableCell>
-              <TableCell className="font-bold">Middle Name</TableCell>
-              <TableCell className="font-bold">Last Name</TableCell>
-              <TableCell className="font-bold">Email</TableCell>
-              <TableCell className="font-bold">Role</TableCell>
-              <TableCell align="center" className="!font-bold">Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {userList.map((row, index) => (
-              user?.id !== row.id ? (
-                <>
-                  <TableRow key={index}>
-                    <TableCell className="font-semibold">{row.firstname}</TableCell>
-                    <TableCell className="font-semibold">{row.middlename}</TableCell>
-                    <TableCell className="font-semibold">{row.lastname}</TableCell>
-                    <TableCell className="font-semibold">{row.email}</TableCell>
-                    <TableCell className="font-semibold">{row.role.label}</TableCell>
-                    <TableCell  className="font-semibold" align="center">
-                      <div className="flex flex-row gap-2 justify-center">
-                        <button className="p-2 bg-yellow-300 rounded-lg" onClick={() => onHandleModal(row.id)}><MdModeEditOutline className="text-2xl"/></button>
-                        <button className="p-2 bg-red-500 rounded-lg" onClick={() => onHandleDelete(row.id)}><MdDelete className="text-2xl"/></button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                </>
-              ) : null
->>>>>>> Stashed changes
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={userList.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
-     </div>
+      <div className=" flex flex-1 items-start flex-col overflow-y-auto gap-4">
+        <div className="flex flex-row px-4  gap-4">
+          <button 
+            className="text-lg hover:text-blue-500 border-b-2 border-transparent hover:border-b-blue-500 font-semibold">
+              All Orders
+            </button>
+          <button 
+            className="text-lg hover:text-blue-500 border-b-2 border-transparent hover:border-b-blue-500 font-semibold">
+              Completed
+          </button>
+          <button 
+            className="text-lg hover:text-blue-500 border-b-2 border-transparent hover:border-b-blue-500 font-semibold">
+              Pending
+          </button>
+          <button 
+            className="text-lg hover:text-blue-500 border-b-2 border-transparent hover:border-b-blue-500 font-semibold">
+              Cancel
+          </button>
+        </div>
+        <div className="h-full w-full max-h-[48rem] overflow-y-auto">
+          <table className="min-w-full table-fixed">
+            <thead>
+              <tr className="flex">
+                <th className="w-1/4 text-center">ID</th>
+                <th className="w-1/4 text-center">Customer Name</th>
+                <th className="w-1/4 text-center">Email</th>
+                <th className="w-1/4 text-center">Role</th>
+                <th className="w-1/4 text-center">Action</th>
+              </tr>
+            </thead>
+            <div className="max-h-[35rem] overflow-y-auto">
+              <table className="min-w-full table-fixed h-[35rem]">
+                <tbody className="items-center">
+                {!isLoading ? (
+                  userList.map((user) => (
+                    <tr key={user.id} className="border-b last:border-b-0 flex">
+                      <td className="w-1/4 text-center py-3">{user.id}</td>
+                      <td className="w-1/4 text-center py-3">{user.firstname}</td>
+                      <td className="w-1/4 text-center py-3">{user.email}</td>
+                      <td className="w-1/4 text-center py-3">Admin</td>
+                      <td className="w-1/4 text-center pr-8 py-2">
+                        <div className="flex items-center justify-center gap-2">
+                          <button onClick={()=>{onHandleModal(user.id)}} className="text-blue-500 hover:text-blue-700 transition duration-200 border border-blue-500 rounded-md p-1 text-2xl"><FaMehRollingEyes /></button>
+                          <button className="text-red-500 hover:text-red-700 transition duration-200 border border-red-500 rounded-md p-1 text-2xl" onClick={() => onHandleDelete(user.id)}><MdDeleteForever /></button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} className="text-center py-4">
+                      <PropagateLoader color="#36d7b7" />
+                    </td>
+                  </tr>
+                )}
+                </tbody>
+              </table>
+            </div>
+          </table>
+        </div>
+      </div>
 
       <Modal
       open={isModalOpen}
