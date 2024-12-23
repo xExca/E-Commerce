@@ -18,16 +18,18 @@ type Order = {
 const OrdersPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [orders, setOrders] = useState<Order[]>();
-  const [total, setTotal] = useState(0);
+  // const [total, setTotal] = useState(0);
   const [cardSelected, setCardSelected] = useState("all");
   const [filterDate, setFilterDate] = useState("");
+  const [search, setSearch] = useState<string>("");
+  // const [searchType, setSearchType] = useState("user");
   // console.log(orders);
   const getOrders = () => {
     // axiosAPI.get(`admin/orders?perPage=${perPage}&page=${currentPage}&card=${cardSelected}&filterDate=${filterDate}`)
     axiosAPI.get(`admin/orders`)
     .then((response)=>{
       setOrders(response.data);
-      setTotal(response.data.total);
+      // setTotal(response.data.total);
     }).catch((error)=>{
       console.log(error);
     }).finally(()=>{
@@ -51,7 +53,10 @@ const OrdersPage = () => {
       }
     })();
     const dateCondition = !filterDate || order.date_ordered === filterDate;
-    return statusCondition && dateCondition;
+
+    const searchCondition = Object.values(order).some((value) => value.toString().toLowerCase().includes(search.toLowerCase()));
+
+    return statusCondition && dateCondition && searchCondition;
   });
   const handleCardSelected = (card:string) => { setCardSelected(card)}
   
@@ -65,6 +70,9 @@ const OrdersPage = () => {
         filterDate={filterDate}
         setFilterDate={setFilterDate}
         title="Order"
+        search ={search}
+        setSearch ={setSearch}
+        isSearchEnable={true}
       />
       <PageContent>
         <CardSelector 
