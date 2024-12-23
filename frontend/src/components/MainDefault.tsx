@@ -4,11 +4,10 @@ import LoginForm from "./Form/LoginForm";
 import React from "react";
 import SignUpForm from "./Form/SignUpForm";
 
-type Props = {
-  type: string
-}
 
-const MainDefault: React.FC<Props> = ({ type }) => {
+const MainDefault = () => {
+  const [type, setType] = React.useState("Login");
+  
   return (
     <main className="flex-1 overflow-y-auto grid grid-cols-2 grid-rows-1 gap-0">
       <div className="row-span-2 items-center justify-center flex">
@@ -18,21 +17,10 @@ const MainDefault: React.FC<Props> = ({ type }) => {
         <div className="w-6/12 h-auto bg-white shadow-2xl rounded-md flex flex-col p-10 gap-11">
           <p className="text-black text-left text-xl">{type}</p>
           <div className="form" id="form">
-            {type == "Login" &&
-              <LoginForm />
-            }
-            {type == "Register" &&
-              <SignUpForm />
-            }
+            {type == "Login" ? <LoginForm /> : <SignUpForm />}
           </div>
           <div className="flex justify-end">
-            {type == "Login" &&
-              <Link to={"/signup"}>Sign up</Link>
-            }
-            {type == "Register" &&
-              <Link to={"/"}>Login</Link>
-            }
-
+            <button onClick={() => setType(type == "Login" ? "Register" : "Login")} className="text-blue-500 hover:text-blue-600">{type == "Login" ? "Register" : "Login"}</button>
           </div>
         </div>
       </div>

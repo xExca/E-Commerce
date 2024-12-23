@@ -25,7 +25,8 @@ class UserController extends Controller
                 'role' => [
                     'value' => $user->roles->first()->id,
                     'label' => $user->getRoleNames()->first()
-                ]
+                ],
+                'created_at' => $user->created_at
             ];
         });
         return response()->json($users);
@@ -36,7 +37,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json(['error'=>'test']);
     }
 
     /**
