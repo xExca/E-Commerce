@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -27,5 +28,6 @@ Route::prefix('admin')->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('orders', OrderController::class);
     Route::get('permissions', [RoleController::class, 'permissions']);
-    
+    Route::get('filter', [ProductController::class, 'productSearchFilter']);
+    Route::resource('cart', CartController::class);
 })->middleware('auth:sanctum');

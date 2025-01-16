@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-      $product = Product::with('productRatings')->where('name', 'like', '%'.$request->search.'%')->paginate($request->perPage);
+      $product = Product::with('productRatings')->take(8)->get();
       return response()->json($product, 200);
     }
 
@@ -30,7 +30,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $test = $product::get();
+        return response()->json($product, 200);
     }
 
     /**
@@ -47,5 +48,18 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function productSearchFilter (){
+      
+      $brand = Product::select('brand')->distinct()->get()->toArray();
+      $color = Product::select('color')->distinct()->get();
+      $category = Product::select('category')->distinct()->get();
+      return response()->json(['brand' => $brand, 'color' => $color, 'category' => $category],200);
+    }
+
+    public function getProductWithRating(Product $product){
+      $product = $product->with('productRatings')->get();
+      return response()->json($product, 200);
     }
 }
