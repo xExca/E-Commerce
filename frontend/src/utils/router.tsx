@@ -14,19 +14,26 @@ import CustomerPage from "../pages/CustomerPage";
 import SettingsPage from "../pages/SettingsPage";
 import RoleTable from "../components/Tables/RoleTable";
 import UserTable from "../components/Tables/UserTable";
-import TanStackTablePractice from "../components/Tables/TanStackTablePractice";
+import ReactQueryPractice from "../components/TestComponents/ReactQueryPractice";
+import TestPage from "../pages/Test/TestPage";
+import ShoppingCart from "../components/ShoppingCart";
+import UserLayout from "../layouts/UserLayout";
 
 const AppRoute: React.FC = () => {
   const {token} = useStateContext();
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/home" element={<Home />}/>
+          <Route element={<UserLayout/>}>
+            <Route path="/home" element={<Home />}/>
+            <Route path="/test" element={<TestPage />}/>
+            <Route path='/cart' element={<ShoppingCart />} />
+          </Route>
           <Route element={<DefaultLayout/>}>
             <Route path="/" element={<MainDefault />} />
           </Route>
           <Route element={<AdminLayout />}>
-            <Route path='/test'element={<TanStackTablePractice/>} />
+            <Route path='/test'element={<ReactQueryPractice/>} />
             <Route path='/dashboard' element={<DashboardPage />} />
             <Route path='/orders' element={<OrdersPage />} />
             <Route path='/products' element={<ProductsPage />} />

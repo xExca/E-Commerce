@@ -3,7 +3,7 @@ import { ImCross } from "react-icons/im";
 
 type Props = {
   filterDate?: string,
-  setFilterDate?: (date:string) => void,
+  setFilterDate: (date:string) => void,
   title:string
 }
 
@@ -15,7 +15,7 @@ const CardTitle = ({filterDate,setFilterDate,title}: Props) => {
       </div>
       <div className="flex items-center">
         <div className="relative">
-        {filterDate && setFilterDate &&(
+        {filterDate &&(
           <>
           <Flatpickr
             value={filterDate}

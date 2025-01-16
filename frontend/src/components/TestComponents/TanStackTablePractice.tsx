@@ -1,7 +1,7 @@
 import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { data } from './data';
+import { data } from '../Tables/data';
 import { FaUpDown, FaArrowUp, FaArrowDown } from 'react-icons/fa6';
-import TablePaginate from './utils/TablePaginate';
+import TablePaginate from '../../utils/tables/TablePaginate';
 
 type TableData = {
   id: number;

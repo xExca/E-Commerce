@@ -22,15 +22,7 @@ class OrderController extends Controller
             ->join('users', 'users.id', '=', 'orders.user_id')
             ->join('products', 'products.id', '=', 'orders.product_id')
             ->where('orders.deleted_at', null);
-        if($request->filterDate) {
-          $ordersQuery = $ordersQuery->where('date_ordered', $request->filterDate);
-        }
-        if ($request->has('card')) {
-            $ordersQuery = $this->orders($request->card, $ordersQuery);
-        }
 
-        // $ordersQuery = $ordersQuery->paginate($request->perPage);
-        
         return response()->json($ordersQuery->get(),200);
     }
 

@@ -1,9 +1,12 @@
 import profile from "../assets/image/profile.png"
 import { IoIosNotifications } from "react-icons/io";
 import { useState } from "react";
+import { useStateContext } from "../utils/ContextProvider";
+import { Link } from "react-router-dom";
 
-const Navbar = () => {
+export const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const { user } = useStateContext();
 
   const handleDropdownToggle = () => {
     setShowDropdown(!showDropdown);
@@ -44,4 +47,35 @@ const Navbar = () => {
     </nav>
   )
 }
-export default Navbar
+
+export const HomeNavbar = () => {
+  const { user } = useStateContext();
+  return (
+    <header className="bg-blue-500 text-white py-4 px-8 flex justify-between items-center">
+      <div className="text-2xl font-bold"><Link to={"/home"}>EASYPC</Link></div>
+      {user ? (
+        <div className="flex flex-row gap-2 items-center">
+          <div className="flex flex-row gap-2 items-center">
+            <div className="flex flex-row gap-2 items-center">
+              <div className="flex flex-row gap-2 items-center">
+                <img src={profile} alt="profile" className="w-11 h-11 rounded-full" />
+              </div>
+              <div className="flex flex-row gap-2 items-center">
+                <div className="flex flex-row gap-2 items-center">
+                  <span className="font-semibold text-lg">John Doe</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <nav className="flex space-x-4">
+          <a href="#" className="hover:underline">Home</a>
+          <a href="#" className="hover:underline">Products</a>
+          <a href="#" className="hover:underline">Contact</a>
+          <a href="#" className="hover:underline">Login</a>
+        </nav>
+      )}
+    </header>
+  )
+}

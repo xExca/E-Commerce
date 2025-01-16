@@ -7,6 +7,7 @@ use App\Enum\RoleEnum;
 use App\Models\Product;
 use App\Enum\PermissionEnum;
 use App\Models\ProductRating;
+use Database\Factories\CartFactory;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Database\Factories\OrderFactory;
@@ -56,13 +57,15 @@ class DatabaseSeeder extends Seeder
       'password'=> bcrypt('1234'),
     ])->assignRole(RoleEnum::User);
 
-    Product::factory()->count(20000)->create();
+    Product::factory()->count(count: 100)->create();
     
-    User::factory()->count(100)->has(ProductRating::factory()->count(8)->state(function (array $attributes) {
+    User::factory()->count(10)->has(ProductRating::factory()->count(8)->state(function (array $attributes) {
       return ['product_id' => Product::query()->inRandomOrder()->value('id')];
     }))->create()->each(function ($user) {
       $user->assignRole(RoleEnum::cases()[rand(1, count(RoleEnum::cases()) - 1)]);
     });
-    OrderFactory::new()->count(10000)->create();
+    OrderFactory::new()->count(100)->create();
+
+    CartFactory::new()->count(50)->create();
   }
 }

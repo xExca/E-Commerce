@@ -1,7 +1,7 @@
 import { useState } from "react"
 import CardTitle from "../components/CardTitle"
 import UserTable from "../components/Tables/UserTable"
-import TablePaginate from "../components/Tables/utils/TablePaginate"
+import TablePaginate from "../utils/tables/TablePaginate"
 
 type Props = {}
 const CustomerPage = (props: Props) => {

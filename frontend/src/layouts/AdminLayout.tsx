@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from "react-router-dom"
-import Navbar from "../components/Navbar";
+import {Navbar} from "../components/Navbar";
 import { useStateContext } from "../utils/ContextProvider";
 import Sidebar from "../components/Sidebar";
 type Props = {}

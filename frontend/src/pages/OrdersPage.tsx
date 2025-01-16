@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import axiosAPI from "../utils/axios-api";
 import CardTitle from "../components/CardTitle";
 import OrdersTable from "../components/Tables/OrdersTable";
-import TablePaginate from "../components/Tables/utils/TablePaginate";
+import TablePaginate from "../utils/tables/TablePaginate";
 import CardSelector from "../components/CardSelector";
-import PageContent from "../components/utils/PageContent";
+import PageContent from "../utils/pages/PageContent";
+import { useGetAPI } from "../utils/hooks/useAPI-hooks";
+import Swal from "sweetalert2";
 
 type Order = {
   id: number,
@@ -16,27 +18,31 @@ type Order = {
 }
 
 const OrdersPage = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [orders, setOrders] = useState<Order[]>();
-  const [total, setTotal] = useState(0);
   const [cardSelected, setCardSelected] = useState("all");
   const [filterDate, setFilterDate] = useState("");
-  // console.log(orders);
-  const getOrders = () => {
-    // axiosAPI.get(`admin/orders?perPage=${perPage}&page=${currentPage}&card=${cardSelected}&filterDate=${filterDate}`)
-    axiosAPI.get(`admin/orders`)
-    .then((response)=>{
-      setOrders(response.data);
-      setTotal(response.data.total);
-    }).catch((error)=>{
-      console.log(error);
-    }).finally(()=>{
-      setIsLoading(false);
-    })
-  }
-  console.log(filterDate);
-  const filteredOrders = orders?.filter((order:Order) => {
-    const statusCondition = (() => {
+
+  const { data, isLoading } = useGetAPI('admin/orders', {
+    onError: (error:any) => {
+      console.error('Error fetching all items:', error.message);
+      Swal.fire({
+        text: error.message,
+        icon: 'error'
+      })
+    },
+  });
+
+  const getOrders = async () => {
+    try {
+      const response = await axiosAPI.get("admin/orders");
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  
+  const filteredOrders = (data ?? []).filter((order: Order) => {
+    const isMatchingStatus = () => {
       switch (cardSelected) {
         case "all":
           return true;
@@ -49,15 +55,20 @@ const OrdersPage = () => {
         default:
           return false;
       }
-    })();
+    };
+  
+    const statusCondition = isMatchingStatus();
     const dateCondition = !filterDate || order.date_ordered === filterDate;
+  
     return statusCondition && dateCondition;
   });
+
+  // console.log(filteredOrders);
   const handleCardSelected = (card:string) => { setCardSelected(card)}
   
-  useEffect(()=>{
-    getOrders();
-  },[])
+  // useEffect(()=>{
+  //   getOrders();
+  // },[])
 
   return (
     <>
@@ -75,7 +86,7 @@ const OrdersPage = () => {
         <OrdersTable
           orders={filteredOrders}
           isLoading={isLoading}
-          refetch={getOrders}
+          // refetch={getOrders}
         />
       </PageContent>
     </>
