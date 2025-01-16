@@ -1,7 +1,11 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient,UseMutationOptions, QueryClient  } from '@tanstack/react-query';
 import axiosAPI from '../axios-api';
-import Swal from 'sweetalert2';
+import { Axios, AxiosError, isAxiosError } from 'axios';
 
+type AddToCartPayload = {
+  product_id: number;
+  user_id: number;
+}
 // Fetch all data
 export const useGetAPI = (endpoint:string, options = {}) => {
   return useQuery({
@@ -30,50 +34,38 @@ export const useGetDataAPI = (endpoint: string, id: number, options = {}) => {
   });
 };
 
-// // Create data
-// export const useCreateAPI = (endpoint:string, options = {}) => {
-//   const queryClient = useQueryClient();
-//   return useMutation(
-//     async (newData) => {
-//       try {
-//         const { data } = await axiosAPI.post(endpoint, newData);
-//         return data;
-//       } catch (error) {
-//         if (axiosAPI.isAxiosError(error)) {
-//           throw error;
-//         }
-//         throw new Error('An unknown error occurred');
-//       }
-//     },
-//     {
-//       onSuccess: () => {
-//         queryClient.invalidateQueries({ queryKey: [endpoint] });
-//       },
-//       ...options,
-//     }
-//   );
-// };
+// Create data
+export const usePostAPI = (endpoint:string) => {
+  return useMutation({
+    mutationFn: async (values: any) => {
+      const data = JSON.stringify(values);
+      try {
+        const response = await axiosAPI.post(endpoint, data);
+        return response.data;
+      }
+      catch (error: unknown){
+        if(error instanceof AxiosError){
+          console.log(error);
+        }else{
+          console.log("usePostAPI error: ", error);
+        }
+      }
+    }
+  })
+}
 
-// // Delete data
-// export const useDeleteAPI = (endpoint:string, options = {}) => {
-//   const queryClient = useQueryClient();
-//   return useMutation(
-//     async (id:number) => {
-//       try {
-//         const { data } = await axiosAPI.delete(`${endpoint}/${id}`);
-//         return data;
-//       } catch (error) {
-//         if (axiosAPI.isAxiosError(error)) {
-//           throw error;
-//         }
-//         throw new Error('An unknown error occurred');
-//       }
-//     },
-//     {
-//       onSuccess: () => {
-//         queryClient.invalidateQueries({ queryKey: [endpoint] });
-//       },
-//       ...options,
-//     }
-//   );
-// };
+export const useDeleteAPI = (endpoint: string) => {
+  return useMutation({
+    mutationFn: async ({ card_id, user_id }: { card_id: number; user_id: number }) => {
+      try {
+        const response = await axiosAPI.delete(`${endpoint}/${card_id}`, {
+          data: { user_id }, // Send additional payload if needed
+        });
+        return response.data;
+      } catch (error) {
+        console.error(error);
+        throw error; // Ensure errors propagate to the `onError` callback
+      }
+    },
+  });
+};

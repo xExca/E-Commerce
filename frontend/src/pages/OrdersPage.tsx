@@ -18,9 +18,9 @@ type Order = {
 }
 
 const OrdersPage = () => {
-<<<<<<< HEAD
   const [cardSelected, setCardSelected] = useState("all");
   const [filterDate, setFilterDate] = useState("");
+  const [search, setSearch] = useState<string>("");
 
   const { data, isLoading } = useGetAPI('admin/orders', {
     onError: (error:any) => {
@@ -44,31 +44,6 @@ const OrdersPage = () => {
   
   const filteredOrders = (data ?? []).filter((order: Order) => {
     const isMatchingStatus = () => {
-=======
-  const [isLoading, setIsLoading] = useState(true);
-  const [orders, setOrders] = useState<Order[]>();
-  // const [total, setTotal] = useState(0);
-  const [cardSelected, setCardSelected] = useState("all");
-  const [filterDate, setFilterDate] = useState("");
-  const [search, setSearch] = useState<string>("");
-  // const [searchType, setSearchType] = useState("user");
-  // console.log(orders);
-  const getOrders = () => {
-    // axiosAPI.get(`admin/orders?perPage=${perPage}&page=${currentPage}&card=${cardSelected}&filterDate=${filterDate}`)
-    axiosAPI.get(`admin/orders`)
-    .then((response)=>{
-      setOrders(response.data);
-      // setTotal(response.data.total);
-    }).catch((error)=>{
-      console.log(error);
-    }).finally(()=>{
-      setIsLoading(false);
-    })
-  }
-  console.log(filterDate);
-  const filteredOrders = orders?.filter((order:Order) => {
-    const statusCondition = (() => {
->>>>>>> 3c8f3adf0d9f83a0d7514b082058b36c111d4f72
       switch (cardSelected) {
         case "all":
           return true;
@@ -85,15 +60,8 @@ const OrdersPage = () => {
   
     const statusCondition = isMatchingStatus();
     const dateCondition = !filterDate || order.date_ordered === filterDate;
-<<<<<<< HEAD
   
     return statusCondition && dateCondition;
-=======
-
-    const searchCondition = Object.values(order).some((value) => value.toString().toLowerCase().includes(search.toLowerCase()));
-
-    return statusCondition && dateCondition && searchCondition;
->>>>>>> 3c8f3adf0d9f83a0d7514b082058b36c111d4f72
   });
 
   // console.log(filteredOrders);

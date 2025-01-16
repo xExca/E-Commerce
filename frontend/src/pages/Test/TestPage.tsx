@@ -1,14 +1,20 @@
+import { useEffect, useState } from "react";
+import { useStateContext } from "../../utils/ContextProvider";
+import { useGetDataAPI } from "../../utils/hooks/useAPI-hooks";
+
 const TestPage = () => {
+  const {user} = useStateContext();
+  const { data, isLoading } = useGetDataAPI('user/cart', user?.id ?? 0);
+  const [ cart, setCartData]  = useState<any>();
+
+   useEffect(() => {
+      if(!isLoading){
+        setCartData(data);
+      }
+  
+    },[data,isLoading])
   return (
-    <div className="flex justify-center items-center min-h-screen border">
-      <div className="grid grid-cols-6 gap-1 border">
-        {Array.from({ length: 36 }, (_, i) => (
-          <div key={i} className="border h-20 w-20 flex justify-center items-center">
-            {i + 1}
-          </div>
-        ))}
-      </div>
-    </div>
+    <div>TestPage</div>
   )
 }
 export default TestPage

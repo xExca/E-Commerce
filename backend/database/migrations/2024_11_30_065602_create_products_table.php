@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->integer('discount')->default(0);
             $table->string('category');
+            $table->integer('quantity');
             $table->string('color');
             $table->string('brand');
             $table->string('image');

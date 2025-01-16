@@ -15,6 +15,7 @@ class Product extends Model
         'price',
         'discount',
         'image',
+        'quantity',
     ];
     public function productRatings(){
         return $this->hasMany(ProductRating::class);

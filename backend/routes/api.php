@@ -21,13 +21,17 @@ Route::get('/checkEmail', [AuthController::class,'checkEmail']);
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/logout',[AuthController::class,'logout']);
 
+Route::get('filter', [ProductController::class, 'productSearchFilter']);
 // Route::get('/users/{user}', [UserController::class, 'show']);
 Route::prefix('admin')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('products', ProductController::class);
-    Route::resource('orders', OrderController::class);
     Route::get('permissions', [RoleController::class, 'permissions']);
-    Route::get('filter', [ProductController::class, 'productSearchFilter']);
-    Route::resource('cart', CartController::class);
+})->middleware('auth:sanctum');
+
+Route::prefix('user')->group(function () {
+  Route::resource('orders', OrderController::class);
+  Route::resource('cart', CartController::class);
+  Route::post('cart/quantity', [CartController::class, 'updateQuantity']);
 })->middleware('auth:sanctum');

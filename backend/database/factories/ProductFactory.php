@@ -24,6 +24,7 @@ class ProductFactory extends Factory
             'color' => fake()->randomElement(['red', 'blue', 'green', 'black', 'white', 'pink, yellow']),
             'brand' => fake()->randomElement(['Aigo', 'Antec', 'AOpen', 'ASRock', 'Asus', 'be quiet!', 'CaseLabs (defunct)', 'Chassis Plans', 'Cooler Master', 'Corsair', 'Deepcool', 'DFI', 'ECS', 'EVGA Corporation', 'Foxconn', 'Fractal Design', 'Gigabyte Technology', 'IBall', 'In Win Development', 'Lian Li', 'MSI', 'MiTAC']),
             'discount' => fake()->numberBetween(0, 99),
+            'quantity' => fake()->numberBetween(1, 100),
         ];
     }
 }
