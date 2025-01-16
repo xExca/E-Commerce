@@ -5,17 +5,25 @@ type Props = {
   filterDate?: string,
   setFilterDate: (date:string) => void,
   title:string
+  search:string
+  setSearch: (search:string) => void
+  isSearchEnable: boolean
 }
 
-const CardTitle = ({filterDate,setFilterDate,title}: Props) => {
+const CardTitle = ({title,search,setSearch,isSearchEnable}: Props) => {
   return (
     <div className="h-[3.5rem] flex flex-row justify-between px-4">
       <div className="flex flex-row items-baseline gap-1">
         <span className="text-3xl font-bold">{title}</span>
       </div>
       <div className="flex items-center">
+<<<<<<< HEAD
         <div className="relative">
         {filterDate &&(
+=======
+        <div className="relative">     
+        {/* {filterDate && (
+>>>>>>> 3c8f3adf0d9f83a0d7514b082058b36c111d4f72
           <>
           <Flatpickr
             value={filterDate}
@@ -34,7 +42,16 @@ const CardTitle = ({filterDate,setFilterDate,title}: Props) => {
               <ImCross size={15}/>
             </button>
             </>
-          )}
+          )} */}
+          {isSearchEnable && (
+             <input
+             type="text"
+             placeholder="Search by name"
+            className="border px-4 py-2 rounded"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}     
+           />
+          )}        
         </div>
       </div>
     </div>
