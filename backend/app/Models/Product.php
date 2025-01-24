@@ -14,10 +14,20 @@ class Product extends Model
         'name',
         'price',
         'discount',
+        'colors',
         'image',
+        'quantity',
     ];
+
+    protected $casts = [
+        'colors' => 'array'
+    ];
+    
     public function productRatings(){
         return $this->hasMany(ProductRating::class);
     }
-    
+
+    public function colors(){
+        return $this->belongsToMany(Color::class);
+    }
 }

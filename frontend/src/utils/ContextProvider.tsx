@@ -14,7 +14,8 @@ type UserType = {
   middlename: string,
   lastname: string,
   id: number | null,
-  email: string
+  email: string,
+  role: string,
   permissions: string[]
 }
 

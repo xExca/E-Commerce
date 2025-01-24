@@ -13,7 +13,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="py-2 px-8 h-20 bg-white flex justify-end items-center">
+    <nav className="py-2 px-8 h-20 bg-white flex justify-end items-center shadow-lg">
       <div className="relative flex flex-row gap-2">
         <div className="flex flex-row gap-2 items-center">
           <div className="flex flex-row gap-2 items-center" onClick={handleDropdownToggle}>
@@ -36,7 +36,7 @@ export const Navbar = () => {
                 </div>
                 <div className="flex flex-row gap-2 items-center">
                   <div className="flex flex-row gap-2 items-center">
-                    <span className="font-semibold text-lg">John Doe</span>
+                    <span className="font-semibold text-lg">{user?.firstname + " " + user?.lastname}</span>
                   </div>
                 </div>
               </div>

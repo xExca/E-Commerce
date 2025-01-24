@@ -22,10 +22,11 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-      $cart = Cart::create([
-        'user_id' => $request->user_id,
-        'product_id' => $request->product_id,
-        'quantity' => $request->quantity,
+      $cart = Cart::updateOrCreate(
+        ['user_id' => $request->user_id, 'product_id' => $request->product_id],
+        ['quantity' => Cart::where('user_id', $request->user_id)
+          ->where('product_id', $request->product_id)
+          ->value('quantity') + $request->quantity,
         'variant' => 'red'
       ]);
       return response()->json($cart, 200);
@@ -53,6 +54,24 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        //
+        // return response()->json(['message' => 'Item removed from cart'], 200);
+        $cart->delete();
+        return response()->json(['message' => 'Item removed from cart'], 200);
+    }
+
+    public function updateQuantity(Request $request){
+      $cart = Cart::where('user_id', $request->user_id)
+        ->where('product_id', $request->product_id)
+        ->first();
+
+      if($request->action == 'increment'){
+        $cart->increment('quantity');
+      }
+
+      if($request->action == 'decrement'){
+        $cart->decrement('quantity');
+      }
+
+      return response()->json(['message' => 'Quantity updated', 'cartItem' => $cart], 200);
     }
 }

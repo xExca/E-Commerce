@@ -18,32 +18,41 @@ import ReactQueryPractice from "../components/TestComponents/ReactQueryPractice"
 import TestPage from "../pages/Test/TestPage";
 import ShoppingCart from "../components/ShoppingCart";
 import UserLayout from "../layouts/UserLayout";
+import LoginPage from "../pages/LoginPage";
+import SignUpPage from "../pages/SignUpPage";
+import LoginForm from "../components/Form/LoginForm";
+import SignUpForm from "../components/Form/SignUpForm";
 
 const AppRoute: React.FC = () => {
   const {token} = useStateContext();
   return (
     <BrowserRouter>
       <Routes>
-          <Route element={<UserLayout/>}>
-            <Route path="/home" element={<Home />}/>
-            <Route path="/test" element={<TestPage />}/>
-            <Route path='/cart' element={<ShoppingCart />} />
-          </Route>
-          <Route element={<DefaultLayout/>}>
-            <Route path="/" element={<MainDefault />} />
-          </Route>
-          <Route element={<AdminLayout />}>
-            <Route path='/test'element={<ReactQueryPractice/>} />
-            <Route path='/dashboard' element={<DashboardPage />} />
-            <Route path='/orders' element={<OrdersPage />} />
-            <Route path='/products' element={<ProductsPage />} />
-            <Route path='/customer' element={<CustomerPage />} />
-            <Route path='/settings' element={<SettingsPage />} />
-            <Route path="/users" element={<UserTable />} />
-            <Route path="/roles" element={<RoleTable />} />
-            <Route path="/roles/:id" element={<RoleEdit />} />
-          </Route>
-        
+          {!token ? (
+            <Route element={<UserLayout />}>
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/register" element={<SignUpForm />} />
+            </Route>
+          ): (
+            <>
+              <Route path='/test'element={<ReactQueryPractice/>} />
+              <Route element={<UserLayout/>}>
+                <Route path="/home" element={<Home />}/>
+                <Route path='/cart' element={<ShoppingCart />} />
+              </Route>
+              <Route element={<AdminLayout />}>
+                <Route path='/dashboard' element={<DashboardPage />} />
+                <Route path='/orders' element={<OrdersPage />} />
+                <Route path='/products' element={<ProductsPage />} />
+                <Route path='/customer' element={<CustomerPage />} />
+                <Route path='/settings' element={<SettingsPage />} />
+                <Route path="/users" element={<UserTable />} />
+                <Route path="/roles" element={<RoleTable />} />
+                <Route path="/roles/:id" element={<RoleEdit />} />
+              </Route>
+            </>
+          )}
+          
         <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
     </BrowserRouter>

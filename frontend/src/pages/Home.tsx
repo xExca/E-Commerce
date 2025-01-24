@@ -52,7 +52,7 @@ const Home = () => {
   });
   
   const { data: productsData } = useGetAPI(`admin/products`);
-  const { data: filters } = useGetAPI(`admin/filter`);
+  const { data: filters } = useGetAPI(`/filter`);
   const { data: selectedData, isLoading, error } = useGetDataAPI('/admin/products', selectedId || 0, {
       enabled: !!selectedId, // Prevent query execution without an ID
     });
@@ -135,17 +135,6 @@ const Home = () => {
   const handleAddToCart = (id: number) => {
     setSelectedId(id);
     setIsOpen(true);
-    axiosAPI.post('/admin/cart', {product_id: id, quantity: 1, user_id: user?.id})
-    .then((response)=>{
-      console.log(response.data)
-    }).catch((error)=>{
-      console.log(error)
-    })
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-    setSelectedId(null);
   };
 
   return (

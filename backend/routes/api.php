@@ -9,25 +9,26 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 
-Route::get('/user', function (Request $request) {
-  return $request->user();
-})->middleware('auth:sanctum');
 
-Route::post('/truds', function (Request $request) {
-  return response()->json($request->name);
-});
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/checkEmail', [AuthController::class,'checkEmail']);
 Route::post('/register',[AuthController::class,'register']);
-Route::post('/logout',[AuthController::class,'logout']);
+Route::get('filter', [ProductController::class, 'productSearchFilter']);
+Route::get('permissions', [RoleController::class, 'permissions']);
 
-// Route::get('/users/{user}', [UserController::class, 'show']);
-Route::prefix('admin')->group(function () {
-    Route::resource('users', UserController::class);
-    Route::resource('roles', RoleController::class);
-    Route::resource('products', ProductController::class);
-    Route::resource('orders', OrderController::class);
-    Route::get('permissions', [RoleController::class, 'permissions']);
-    Route::get('filter', [ProductController::class, 'productSearchFilter']);
-    Route::resource('cart', CartController::class);
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::prefix('admin')->group(function () {
+        Route::apiResource('users', UserController::class);
+        Route::apiResource('roles', RoleController::class);
+        Route::apiResource('products', ProductController::class);
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::apiResource('orders', OrderController::class);
+        Route::apiResource('cart', CartController::class);
+        Route::post('cart/quantity', [CartController::class, 'updateQuantity']);
+    });
+
+    
+});

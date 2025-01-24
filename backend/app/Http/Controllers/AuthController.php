@@ -6,44 +6,48 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
-  public function login(LoginRequest $request)
-  {
-    $creds = $request->validated();
-    $auth = Auth::attempt($creds);
-    if(!$auth ) {
-      return response()->json(['message' => 'Invalid credentials'], 401);
-    }
-    $user = Auth::user();
-    $permissions  = $user->getAllPermissions()->pluck('name')->toArray();
-    $token = $user->createToken('main')->plainTextToken;
-    return response(compact('user', 'token', 'permissions'));
-  }
-  public function checkEmail(Request $request)
-  {
-      $email = $request->input('email');
-      $user = User::where('email', $email)->first();
-      if ($user) {
-          return response()->json(['exists' => true]);
-      }
-      return response()->json(['exists' => false]);
-  }
   public function register(RegisterRequest $request)
   {
-    $request->validated();
-    $user = User::create($request->all());
-    if ($user) {
-      return response(['success' => true]);
+    $validated = $request->validated();
+
+    $user = User::create($validated);
+
+    return response()->json([
+      'user' => $user
+    ]);
+  }
+
+  public function login(LoginRequest $request){
+    $validated = $request->validated();
+
+    $user = User::where('email', $validated['email'])->first();
+
+    if(!$user || !Hash::check($validated['password'], $user->password)){
+      return response()->json([
+        'message' => 'Invalid credentials'
+      ], 401);
     }
-    return response(['message' => 'Error creating user'], 500);
-  } 
+
+    $token = $user->createToken($request->email);
+
+    return response()->json([
+      'token' => $token->plainTextToken,
+      'user' => $user,
+      'permissions' => $user->roles->first()->permissions->pluck('name')->toArray(),
+    ]);
+  }
 
   public function logout(Request $request){
-    Auth::logout();
-    return response()->json(['message'=> 'Logout successful'],200);
+    $request->user()->tokens()->delete();
+
+    return response()->json([
+      'message' => 'Successfully logged out'
+    ], 200);
   }
 }

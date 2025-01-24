@@ -16,4 +16,8 @@ class Order extends Model
         'status',
         'deleted_at'
         ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

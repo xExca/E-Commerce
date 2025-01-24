@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use App\Enum\RoleEnum;
 use App\Models\Product;
+use App\Models\Color;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,13 +15,6 @@ enum Size: string {
   case SMALL = 'small';
   case MEDIUM = 'medium';
   case LARGE = 'large';
-}
-enum Color: string {
-  case BLACK = 'black';
-  case WHITE = 'white';
-  case PINK = 'pink';
-  case YELLOW = 'yellow';
-  case RED = 'red';
 }
 class CartFactory extends Factory
 {
@@ -39,7 +33,7 @@ class CartFactory extends Factory
             'quantity' => fake()->numberBetween(1, 5),
             'variant' => array_filter([
                 'size' => fake()->optional()->randomElement(Size::cases()),
-                'color' => fake()->optional()->randomElement(Color::cases()),
+                'color' => Color::query()->inRandomOrder()->value('id'),
             ]),
         ];
     }

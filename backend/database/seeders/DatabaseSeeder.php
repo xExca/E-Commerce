@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Enum\RoleEnum;
 use App\Models\Product;
 use App\Enum\PermissionEnum;
+use App\Models\Color;
 use App\Models\ProductRating;
 use Database\Factories\CartFactory;
 use Illuminate\Database\Seeder;
@@ -57,7 +58,13 @@ class DatabaseSeeder extends Seeder
       'password'=> bcrypt('1234'),
     ])->assignRole(RoleEnum::User);
 
-    Product::factory()->count(count: 100)->create();
+    $colors = Color::factory()->count(10)->create();
+    Product::factory(20)->create()->each(function ($product) use ($colors) {
+        // Attach 1 to 3 random colors to each product
+        $product->colors()->attach(
+            $colors->random(rand(1, 3))->pluck('id')->toArray()
+        );
+    });
     
     User::factory()->count(10)->has(ProductRating::factory()->count(8)->state(function (array $attributes) {
       return ['product_id' => Product::query()->inRandomOrder()->value('id')];
@@ -67,5 +74,7 @@ class DatabaseSeeder extends Seeder
     OrderFactory::new()->count(100)->create();
 
     CartFactory::new()->count(50)->create();
+
+
   }
 }
