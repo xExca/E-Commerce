@@ -7,16 +7,16 @@ const AdminLayout = (props: Props) => {
   const {token, user} = useStateContext();
   
   if (!token || !user) {
-    return <Navigate to="/login"/>
+    return <Navigate to="/"/>
   }
   return (
     <>
     <div className="flex flex-row h-screen">
       <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden bg-red-200">
+      <div className="flex-1 flex flex-col overflow-hidden">
         <Navbar />
         <div className="w-full h-full">
-          <div className="p-12 pt-14 bg-gray-100 w-full h-screen grid grid-cols-1 gap-4 overflow-y-hidden">
+          <div className="p-12 pt-14 w-full h-screen grid grid-cols-1 gap-4 overflow-y-hidden">
             <div className="h-[48rem] flex flex-col">
               <Outlet />
             </div>

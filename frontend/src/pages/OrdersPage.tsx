@@ -22,7 +22,7 @@ const OrdersPage = () => {
   const [filterDate, setFilterDate] = useState("");
   const [search, setSearch] = useState<string>("");
 
-  const { data, isLoading } = useGetAPI('admin/orders', {
+  const { data, isLoading } = useGetAPI('user/orders', {
     onError: (error:any) => {
       console.error('Error fetching all items:', error.message);
       Swal.fire({
@@ -31,15 +31,6 @@ const OrdersPage = () => {
       })
     },
   });
-
-  const getOrders = async () => {
-    try {
-      const response = await axiosAPI.get("admin/orders");
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
   
   
   const filteredOrders = (data ?? []).filter((order: Order) => {
@@ -64,12 +55,7 @@ const OrdersPage = () => {
     return statusCondition && dateCondition;
   });
 
-  // console.log(filteredOrders);
   const handleCardSelected = (card:string) => { setCardSelected(card)}
-  
-  // useEffect(()=>{
-  //   getOrders();
-  // },[])
 
   return (
     <>

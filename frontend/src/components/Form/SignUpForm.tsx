@@ -83,7 +83,7 @@ const SignUpForm = () => {
             <Field type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password" className="border rounded p-2" aria-label="Confirm Password" aria-required="true" />
             <ErrorMessage name="password_confirmation" component={TextError} />
             <button type="submit" className="bg-lime-300 border rounded-md mt-8 p-2" disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : 'Login'}
+              {isSubmitting ? 'Submitting...' : 'Register'}
             </button>
           </div>
         </Form>

@@ -14,7 +14,7 @@ const TestPage = () => {
   
     },[data,isLoading])
   return (
-    <div>TestPage</div>
+    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-red-500">TestPage</div>
   )
 }
 export default TestPage
