@@ -5,19 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Color extends Model
+class Size extends Model
 {
-    /** @use HasFactory<\Database\Factories\ColorFactory> */
-    use HasFactory;
-
-    protected $fillable = [
-        'name',
-    ];
+  use HasFactory;
+    //
+    protected $fillable = ['size'];
 
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_color_size')
-                    ->withPivot('size_id', 'stock', 'price')
+                    ->withPivot('color_id', 'stock', 'price')
                     ->withTimestamps();
     }
 }

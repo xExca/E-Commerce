@@ -14,6 +14,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register',[AuthController::class,'register']);
 Route::get('filter', [ProductController::class, 'productSearchFilter']);
 Route::get('permissions', [RoleController::class, 'permissions']);
+Route::apiResource('products', ProductController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
@@ -21,7 +22,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
-        Route::apiResource('products', ProductController::class);
     });
 
     Route::prefix('user')->group(function () {

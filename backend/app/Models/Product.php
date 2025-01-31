@@ -23,11 +23,17 @@ class Product extends Model
         'colors' => 'array'
     ];
     
-    public function productRatings(){
-        return $this->hasMany(ProductRating::class);
-    }
 
-    public function colors(){
-        return $this->belongsToMany(Color::class);
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class, 'product_color_size')
+                    ->withPivot('size_id', 'stock', 'price')
+                    ->withTimestamps();
+    }
+    public function sizes()
+    {
+        return $this->belongsToMany(Size::class, 'product_color_size')
+                    ->withPivot('color_id', 'stock', 'price')
+                    ->withTimestamps();
     }
 }

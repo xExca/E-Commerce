@@ -20,7 +20,7 @@ const NotFoundPage = (props: Props) => {
         ></span>
 
         <span className="relative block px-8 py-3 bg-[#1A2238] border border-current">
-          <Link to={'/home'}>Go Home</Link>
+          <Link to={token ? "/home" : "/login"}>Go Home</Link>
         </span>
       </a>
     </button>

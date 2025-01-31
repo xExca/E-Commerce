@@ -1,40 +1,122 @@
-import { useMutation, useQuery, QueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
-const POSTS = [
-  {id: 1, title: "Hello World"},
-  {id: 2, title: "Hello World 2"},
-]
+
 
 const ReactQueryPractice = () => {
-  const queryClient = new QueryClient();
-  console.log(POSTS)
-
-  const postsQuery = useQuery({
-    queryKey: ["endpoint"],
-    queryFn: async () => {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return POSTS;
-    }
-  });
-  
-  const newPostMutation = useMutation({
-    mutationFn: async (title:string) => {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      POSTS.push({id: POSTS.length + 1, title});
+  const colors = [ 
+    {
+        "id": 1,
+        "name": "LightSlateGray",
+        "created_at": "2025-01-28T07:18:32.000000Z",
+        "updated_at": "2025-01-28T07:18:32.000000Z",
+        "pivot": {
+            "product_id": 5,
+            "color_id": 1
+        },
+        "sizes": [
+            {
+                "id": 1,
+                "name": "4096",
+                "quantity": 5,
+                "created_at": "2025-01-28T07:18:32.000000Z",
+                "updated_at": "2025-01-28T07:18:32.000000Z",
+                "pivot": {
+                    "color_id": 1,
+                    "size_id": 1
+                }
+            },
+            {
+                "id": 2,
+                "name": "2048",
+                "quantity": 84,
+                "created_at": "2025-01-28T07:18:32.000000Z",
+                "updated_at": "2025-01-28T07:18:32.000000Z",
+                "pivot": {
+                    "color_id": 1,
+                    "size_id": 2
+                }
+            }
+        ]
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["endpoint"] });
+    {
+        "id": 8,
+        "name": "DarkKhaki",
+        "created_at": "2025-01-28T07:18:32.000000Z",
+        "updated_at": "2025-01-28T07:18:32.000000Z",
+        "pivot": {
+            "product_id": 5,
+            "color_id": 8
+        },
+        "sizes": [
+            {
+                "id": 15,
+                "name": "2048",
+                "quantity": 24,
+                "created_at": "2025-01-28T07:18:32.000000Z",
+                "updated_at": "2025-01-28T07:18:32.000000Z",
+                "pivot": {
+                    "color_id": 8,
+                    "size_id": 15
+                }
+            },
+            {
+                "id": 16,
+                "name": "1024",
+                "quantity": 24,
+                "created_at": "2025-01-28T07:18:32.000000Z",
+                "updated_at": "2025-01-28T07:18:32.000000Z",
+                "pivot": {
+                    "color_id": 8,
+                    "size_id": 16
+                }
+            }
+        ]
     }
-  })
+  ];
+
+  const [selectedColor, setSelectedColor] = useState<string | null>('LightSlateGray');
+
+  // Extract unique sizes
+  const uniqueSizes = Array.from(
+    new Map(
+      colors
+        .flatMap(color => color.sizes)
+        .map(size => [size.name, size]) // Use size name as the key for uniqueness
+    ).values()
+  );
+
   return (
     <div>
-      {postsQuery.data?.map(post => (
-        <div key={post.id}>{post.id} {post.title} </div>
-      ))}
-      <button onClick={() => newPostMutation.mutate("New Post")} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        add post
-      </button>
+      {/* Render color selection */}
+      <div>
+        <h3>Select Color:</h3>
+        {colors.map(color => (
+          <button
+            key={color.id}
+            style={{
+              margin: '5px',
+              backgroundColor: selectedColor === color.name ? 'lightblue' : 'white'
+            }}
+            onClick={() => setSelectedColor(color.name)}
+          >
+            {color.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Render sizes */}
+      <div>
+        <h3>Sizes:</h3>
+        {uniqueSizes.map(size => (
+          <div
+            key={size.id}
+            className={`m-1 p-2 border border-black ${colors.find(color => color.name === selectedColor)?.sizes.some(s => s.name === size.name) ? 'bg-green-100' : 'bg-white'}`}
+          >
+            {size.name}
+          </div>
+        ))}
+      </div>
     </div>
-  )
+  );
 }
 export default ReactQueryPractice

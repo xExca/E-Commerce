@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-      $product = Product::with('productRatings')->take(8)->get();
+      $product = Product::with('colors', 'sizes')->where('id', 10)->get();
       return response()->json($product, 200);
     }
 
@@ -29,8 +29,8 @@ class ProductController extends Controller
      * Display the specified resource.
      */
     public function show(Product $product)
-    {
-        $test = $product::get();
+    {   
+        $product = $product->with('colors.sizes')->where('id', $product->id)->first();
         return response()->json($product, 200);
     }
 

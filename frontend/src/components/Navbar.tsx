@@ -70,7 +70,7 @@ export const HomeNavbar = () => {
         </div>
       ) : (
         <nav className="flex space-x-4">
-          <a href="#" className="hover:underline">Home</a>
+          <a href="/home" className="hover:underline">Home</a>
           <a href="#" className="hover:underline">Products</a>
           <a href="#" className="hover:underline">Contact</a>
           <a href="#" className="hover:underline">Login</a>

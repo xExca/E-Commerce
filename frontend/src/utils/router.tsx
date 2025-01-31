@@ -28,16 +28,16 @@ const AppRoute: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path='/test'element={<ReactQueryPractice/>} />
           {!token ? (
             <Route element={<UserLayout />}>
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<SignUpForm />} />
             </Route>
-          ): (
+          ) : (
             <>
-              <Route path='/test'element={<ReactQueryPractice/>} />
               <Route element={<UserLayout/>}>
-                <Route path="/home" element={<Home />}/>
                 <Route path='/cart' element={<ShoppingCart />} />
               </Route>
               <Route element={<AdminLayout />}>
