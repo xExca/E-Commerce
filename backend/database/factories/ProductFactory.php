@@ -19,12 +19,11 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'price' => fake()->randomFloat(2, 0, 1000),
-            'image' => fake()->imageUrl(),
+            'discount' => $this->faker->randomFloat(2, 0, 75),
             'category' => fake()->randomElement(['CPU', 'GPU', 'Motherboard', 'RAM', 'Storage', 'Power Supply Unit', 'Case', 'Cooling', 'Peripherals']),
             'brand' => fake()->randomElement(['Aigo', 'Antec', 'AOpen', 'ASRock', 'Asus', 'be quiet!', 'CaseLabs (defunct)', 'Chassis Plans', 'Cooler Master', 'Corsair', 'Deepcool', 'DFI', 'ECS', 'EVGA Corporation', 'Foxconn', 'Fractal Design', 'Gigabyte Technology', 'IBall', 'In Win Development', 'Lian Li', 'MSI', 'MiTAC']),
-            'discount' => fake()->numberBetween(0, 99),
-            'quantity' => fake()->numberBetween(1, 100),
+            'image' => $this->faker->imageUrl(640, 480, 'products'),
+            'description' => $this->faker->paragraph,
         ];
     }
 }

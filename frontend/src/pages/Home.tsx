@@ -51,11 +51,11 @@ const Home = () => {
     rating: null
   });
   
-  const { data: productsData } = useGetAPI(`admin/products`);
+  const { data: productsData } = useGetAPI(`/products`);
   const { data: filters } = useGetAPI(`/filter`);
-  const { data: selectedData, isLoading, error } = useGetDataAPI('/admin/products', selectedId || 0, {
-      enabled: !!selectedId, // Prevent query execution without an ID
-    });
+  const { data: selectedData, isLoading, error } = useGetDataAPI('/products', selectedId || 0, {
+    enabled: !!selectedId, // Prevent query execution without an ID
+  });
 
   const handleColorClick = (color: string) => {
     if (selectedColor === color) {
@@ -186,7 +186,7 @@ const Home = () => {
         )}
         <div className='mb-4'>
           <h3 className="font-medium">Color</h3>
-          <ColorPicker />
+          {/* <ColorPicker /> */}
         </div>
         <div className='mb-4'>
           <h3 className="font-medium">Rating</h3>

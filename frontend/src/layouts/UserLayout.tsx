@@ -4,12 +4,15 @@ import Footer from '../components/Footer';
 import { HomeNavbar } from '../components/Navbar';
 import { HiOutlineComputerDesktop } from "react-icons/hi2";
 import { Card, Typography } from '@mui/material';
+import { useStateContext } from '../utils/ContextProvider';
 
 const UserLayout = () => {
+  const {token} = useStateContext();
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col justify-between">
       <HomeNavbar />
-      <main className="flex-1 overflow-y-auto grid grid-cols-2 grid-rows-1 gap-0">
+      {!token ? (
+        <main className="flex-1 overflow-y-auto grid grid-cols-2 grid-rows-1 gap-0">
         <div className="row-span-2 items-center justify-center flex">
           <HiOutlineComputerDesktop className="text-white text-9xl" />
         </div>
@@ -23,6 +26,11 @@ const UserLayout = () => {
           </Card>
         </div>
       </main>
+      ) : (
+        <main className="flex-1 overflow-y-auto">
+          <Outlet />
+        </main>
+      )}
       <Footer />
     </div>
   )

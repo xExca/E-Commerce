@@ -2,19 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Models\Size;
 use App\Models\User;
+use App\Models\Color;
 use App\Enum\RoleEnum;
 use App\Models\Product;
-use App\Enum\PermissionEnum;
-use App\Models\Color;
-use App\Models\ProductRating;
-use Database\Factories\CartFactory;
+use App\Models\ColorSize;
+use App\Models\ProductColorSize;
+use Database\Factories\ProductColorSizeFactory;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+use Database\Factories\CartFactory;
 use Database\Factories\OrderFactory;
-use Database\Factories\ProductFactory;
-use Spatie\Permission\Models\Permission;
-use Database\Factories\ProductRatingFactory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,7 +29,6 @@ class DatabaseSeeder extends Seeder
       RolePermissionSeeder::class,
     ]);
 
-    
     User::factory()->create([
       'firstname' => 'John',
       'middlename' => 'B',
@@ -58,23 +56,26 @@ class DatabaseSeeder extends Seeder
       'password'=> bcrypt('1234'),
     ])->assignRole(RoleEnum::User);
 
-    $colors = Color::factory()->count(10)->create();
-    Product::factory(20)->create()->each(function ($product) use ($colors) {
-        // Attach 1 to 3 random colors to each product
-        $product->colors()->attach(
-            $colors->random(rand(1, 3))->pluck('id')->toArray()
-        );
-    });
     
-    User::factory()->count(10)->has(ProductRating::factory()->count(8)->state(function (array $attributes) {
-      return ['product_id' => Product::query()->inRandomOrder()->value('id')];
-    }))->create()->each(function ($user) {
-      $user->assignRole(RoleEnum::cases()[rand(1, count(RoleEnum::cases()) - 1)]);
-    });
-    OrderFactory::new()->count(100)->create();
+    Size::insert([
+      ['name' => '128'],
+      ['name' => '256'],
+      ['name' => '512'],
+      ['name' => '1024'],
+      ['name' => '2048'],
+  ]);
+  
+    Color::insert([
+      ['name'=>'Red', 'hex'=>'#FF0000'],
+      ['name'=>'Green', 'hex'=>'#00FF00'],
+      ['name'=>'Blue', 'hex'=>'#0000FF'],
+      ['name'=>'Yellow', 'hex'=>'#FFFF00'],
+      ['name'=>'Purple', 'hex'=>'#FF00FF'],
+    ]);
 
-    CartFactory::new()->count(50)->create();
+    $products = Product::factory()->count(10)->create();
 
-
+    // Generate data for product_color_size
+    ProductColorSize::factory(10)->create();
   }
 }
